@@ -103,7 +103,7 @@ export function HeroSection() {
           </h1>
           
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto animate-fade-in">
-            BranditScan is the industry's most trusted and advanced brand protection service. 
+            BrandSafe is the industry's most trusted and advanced brand protection service. 
             It safeguards your brand by identifying, monitoring, and removing counterfeit content and infringements.
           </p>
           

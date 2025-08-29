@@ -7,7 +7,7 @@ export function AppScreenshots() {
     <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <p className="text-sm font-medium text-muted-foreground mb-2">BranditScan app</p>
+          <p className="text-sm font-medium text-muted-foreground mb-2">BrandSafe app</p>
           <h2 className="text-3xl font-bold mb-4" data-testid="text-app-title">
             Have a look at what's inside the app.
           </h2>

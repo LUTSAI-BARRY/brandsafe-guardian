@@ -1,6 +1,6 @@
 # Overview
 
-BranditScan is a brand protection and piracy protection service designed for content creators. The application helps creators monitor, identify, and remove counterfeit content and copyright infringements across the web. It features automated DMCA takedowns, Google delisting capabilities, social media monitoring, and comprehensive reporting dashboards.
+BrandSafe is a brand protection and piracy protection service designed for content creators. The application helps creators monitor, identify, and remove counterfeit content and copyright infringements across the web. It features automated DMCA takedowns, Google delisting capabilities, social media monitoring, and comprehensive reporting dashboards.
 
 This is a full-stack web application built with React frontend and Express.js backend, utilizing PostgreSQL for data persistence and featuring a modern, responsive design with shadcn/ui components.
 

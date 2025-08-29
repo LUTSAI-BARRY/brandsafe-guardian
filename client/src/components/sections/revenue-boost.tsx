@@ -15,7 +15,7 @@ export function RevenueBoosting() {
           <div>
             <p className="text-sm font-medium text-muted-foreground mb-2">Reclaim Your Revenue</p>
             <h2 className="text-3xl font-bold mb-6" data-testid="text-revenue-title">
-              BranditScan will help you boost revenue, mitigate scams using your name & increase traffic by ensuring fans access your legitimate content first.
+              BrandSafe will help you boost revenue, mitigate scams using your name & increase traffic by ensuring fans access your legitimate content first.
             </h2>
             
             <div className="space-y-4 mb-8">

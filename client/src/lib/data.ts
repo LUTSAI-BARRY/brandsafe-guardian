@@ -3,42 +3,42 @@ export const testimonials = [
     id: 1,
     name: "Korina Kova",
     role: "Content Creator",
-    quote: "After years of fighting piracy alone, BranditScan's team and tools are the ones I trust with my brand. They make piracy effortless for me.",
+    quote: "After years of fighting piracy alone, BrandSafe's team and tools are the ones I trust with my brand. They make piracy effortless for me.",
     image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150"
   },
   {
     id: 2,
     name: "Reya Sunshine",
     role: "Digital Creator",
-    quote: "With BranditScan, I'm loving the control it gives me. I love the fact it gives me intel on who is pirating my content.",
+    quote: "With BrandSafe, I'm loving the control it gives me. I love the fact it gives me intel on who is pirating my content.",
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150"
   },
   {
     id: 3,
     name: "Noah Bensi",
     role: "Content Creator",
-    quote: "I've been in the industry for a long time & I have a lot of content, also I have a lot of stolen content. Without BranditScan, I would be losing money.",
+    quote: "I've been in the industry for a long time & I have a lot of content, also I have a lot of stolen content. Without BrandSafe, I would be losing money.",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150"
   },
   {
     id: 4,
     name: "AstroDomina",
     role: "Creator",
-    quote: "BranditScan is the Batman for creators! They're the dark knight that rises & fight piracy for you when you're sleeping.",
+    quote: "BrandSafe is the Batman for creators! They're the dark knight that rises & fight piracy for you when you're sleeping.",
     image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150"
   },
   {
     id: 5,
     name: "DestinyDiaz",
     role: "Content Creator",
-    quote: "I save time, no more searching & sending, DMCA's are all automated with BranditScan.",
+    quote: "I save time, no more searching & sending, DMCA's are all automated with BrandSafe.",
     image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150"
   },
   {
     id: 6,
     name: "ImMeganLive",
     role: "Creator",
-    quote: "BranditScan has your back all the time, it's a great feeling to be supported.",
+    quote: "BrandSafe has your back all the time, it's a great feeling to be supported.",
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150"
   },
   {
@@ -52,7 +52,7 @@ export const testimonials = [
     id: 8,
     name: "Cattie Candescent",
     role: "Creator",
-    quote: "I feel like I have control over my brand again. Something I never thought would be possible. I've tried other DMCA services with such little to show for, BranditScan has been a game changer!",
+    quote: "I feel like I have control over my brand again. Something I never thought would be possible. I've tried other DMCA services with such little to show for, BrandSafe has been a game changer!",
     image: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150"
   }
 ];
@@ -67,7 +67,7 @@ export const features = [
   {
     icon: "fab fa-google",
     title: "Google Delisting",
-    description: "BranditScan is a member of Google's Trusted Copyright Removal Program, meaning that Google rapidly delists any infringing content we report to them.",
+    description: "BrandSafe is a member of Google's Trusted Copyright Removal Program, meaning that Google rapidly delists any infringing content we report to them.",
     color: "success"
   },
   {
@@ -102,15 +102,15 @@ export const faqData = [
     answer: "A DMCA takedown is a process that allows copyright owners to request the removal of their copyrighted content from websites without their permission, as outlined in the Digital Millennium Copyright Act (DMCA) of 1998. When unauthorized use is detected, the copyright owner can send a cease & desist takedown notice the host of the content. The host must then promptly remove or disable access to the infringing material to retain legal protections."
   },
   {
-    question: "How Can BranditScan Improve My Brand?",
+    question: "How Can BrandSafe Improve My Brand?",
     answer: "Taking control of your Brand will enable you to track down infringements, which in turn can hurt your income and image, let alone breach security when you have geo blocking part of your brand strategy. Removing as much as possible these infringements will boost your overall revenue on your legitimate brand platforms."
   },
   {
-    question: "How Will BranditScan Take Down My Brand Infringements?",
+    question: "How Will BrandSafe Take Down My Brand Infringements?",
     answer: "We offer a Takedown request tool that can automate your Takedowns. We can also delist from Google any site you no longer want indexed! Pretty neat, right?"
   },
   {
-    question: "Can I Earn Revenue On BranditScan?",
+    question: "Can I Earn Revenue On BrandSafe?",
     answer: "We offer an affiliate program that will enable you to earn 10% of any purchase made by your referrals, lifetime!"
   },
   {
@@ -123,7 +123,7 @@ export const faqData = [
   },
   {
     question: "Can You Remove Content From Reddit?",
-    answer: "Absolutely, BranditScan scans Reddit to find infringing posts & also collects external links pirates are promoting! While Reddit is a great promotional tool, it also carries many subs that promote piracy."
+    answer: "Absolutely, BrandSafe scans Reddit to find infringing posts & also collects external links pirates are promoting! While Reddit is a great promotional tool, it also carries many subs that promote piracy."
   }
 ];
 
@@ -137,8 +137,8 @@ export const blogPosts = [
   },
   {
     id: 2,
-    title: "BranditScan x CreatorTraffic: A Powerful New Tool for Creators",
-    excerpt: "We've got exciting news! BranditScan has officially partnered with CreatorTraffic to bring creators even more tools to grow their business and protect their content.",
+    title: "BrandSafe x CreatorTraffic: A Powerful New Tool for Creators",
+    excerpt: "We've got exciting news! BrandSafe has officially partnered with CreatorTraffic to bring creators even more tools to grow their business and protect their content.",
     date: "12 June, 08:18 PM",
     image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200"
   },

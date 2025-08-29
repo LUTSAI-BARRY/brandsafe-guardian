@@ -184,9 +184,9 @@ export function ContactSection() {
       {/* Join Section */}
       <section className="py-20 bg-muted">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-sm font-medium text-muted-foreground mb-2">Join BranditScan</p>
+          <p className="text-sm font-medium text-muted-foreground mb-2">Join BrandSafe</p>
           <h2 className="text-3xl font-bold mb-8" data-testid="text-join-title">
-            Join BranditScan and get your FIRST MONTH FREE!
+            Join BrandSafe and get your FIRST MONTH FREE!
           </h2>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button variant="outline" data-testid="button-pricing-join">

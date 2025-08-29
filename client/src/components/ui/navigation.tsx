@@ -37,7 +37,7 @@ export function Navigation() {
     e.preventDefault();
     toast({
       title: "Account created!",
-      description: "Your free 30-day trial has started. Welcome to BranditScan!",
+      description: "Your free 30-day trial has started. Welcome to BrandSafe!",
     });
     setShowSignUp(false);
     setSignUpForm({ name: "", email: "", password: "" });
@@ -53,7 +53,7 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-2">
             <Shield className="text-primary text-2xl" />
-            <span className="text-xl font-bold text-foreground">BranditScan</span>
+            <span className="text-xl font-bold text-foreground">BrandSafe</span>
           </div>
           
           <div className="hidden md:flex space-x-8">
@@ -94,7 +94,7 @@ export function Navigation() {
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Sign In to BranditScan</DialogTitle>
+                  <DialogTitle>Sign In to BrandSafe</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSignIn} className="space-y-4">
                   <div>
