@@ -1,8 +1,39 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { appScreenshots } from "@/lib/data";
+import { useToast } from "@/hooks/use-toast";
 
 export function AppScreenshots() {
+  const { toast } = useToast();
+  
+  const handleAppStore = () => {
+    toast({
+      title: "Coming Soon!",
+      description: "BrandSafe mobile app will be available on the App Store soon.",
+    });
+  };
+  
+  const handleGooglePlay = () => {
+    toast({
+      title: "Coming Soon!",
+      description: "BrandSafe mobile app will be available on Google Play soon.",
+    });
+  };
+  
+  const handlePricing = () => {
+    const element = document.getElementById('pricing');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
+  const handleGetStarted = () => {
+    toast({
+      title: "Get Started!",
+      description: "Starting your BrandSafe journey with 30 days free protection.",
+    });
+  };
+  
   return (
     <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,6 +81,7 @@ export function AppScreenshots() {
             <Button 
               variant="outline" 
               className="flex items-center space-x-2"
+              onClick={handleAppStore}
               data-testid="button-app-store"
             >
               <i className="fab fa-apple text-xl" />
@@ -58,6 +90,7 @@ export function AppScreenshots() {
             <Button 
               variant="outline" 
               className="flex items-center space-x-2"
+              onClick={handleGooglePlay}
               data-testid="button-google-play"
             >
               <i className="fab fa-google-play text-xl" />
@@ -65,10 +98,10 @@ export function AppScreenshots() {
             </Button>
           </div>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button variant="outline" data-testid="button-pricing-cta">
+            <Button variant="outline" onClick={handlePricing} data-testid="button-pricing-cta">
               Pricing
             </Button>
-            <Button data-testid="button-get-started-cta">
+            <Button onClick={handleGetStarted} data-testid="button-get-started-cta">
               Get Started
             </Button>
           </div>

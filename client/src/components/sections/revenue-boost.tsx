@@ -1,7 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export function RevenueBoosting() {
+  const { toast } = useToast();
+  
+  const handleGetStarted = () => {
+    toast({
+      title: "Ready to boost your revenue!",
+      description: "Starting your free trial to protect your brand and increase earnings.",
+    });
+  };
+  
   const benefits = [
     "Increase legitimate traffic by removing competing pirated content",
     "Protect brand reputation from counterfeit associations", 
@@ -29,7 +39,7 @@ export function RevenueBoosting() {
               ))}
             </div>
             
-            <Button size="lg" data-testid="button-get-started-revenue">
+            <Button size="lg" onClick={handleGetStarted} data-testid="button-get-started-revenue">
               Get Started
             </Button>
           </div>

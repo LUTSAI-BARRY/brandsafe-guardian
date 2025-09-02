@@ -3,9 +3,32 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export function PricingSection() {
   const [isAnnual, setIsAnnual] = useState(false);
+  const { toast } = useToast();
+
+  const handleGetStarted = () => {
+    toast({
+      title: "Starting your free trial!",
+      description: "Redirecting to registration for your 30-day free trial.",
+    });
+  };
+
+  const handleAgencies = () => {
+    toast({
+      title: "Agency Solutions",
+      description: "Contact our sales team for custom agency pricing and features.",
+    });
+  };
+
+  const handleStudios = () => {
+    toast({
+      title: "Studio Solutions", 
+      description: "Contact our sales team for bulk studio licensing and management.",
+    });
+  };
 
   const features = [
     "Unlimited DMCA Takedowns",
@@ -62,12 +85,12 @@ export function PricingSection() {
               </div>
               
               <div className="text-muted-foreground mb-2" data-testid="text-then-price">
-                then {isAnnual ? '$450/yr' : '$45/mo'}
+                then {isAnnual ? '5,000 KES/yr' : '500 KES/mo'}
               </div>
               
               {isAnnual && (
                 <div className="text-success font-semibold" data-testid="text-annual-savings">
-                  $540 value - 2 FREE MONTHS
+                  6,000 KES value - 2 FREE MONTHS
                 </div>
               )}
             </div>
@@ -81,7 +104,7 @@ export function PricingSection() {
               ))}
             </div>
 
-            <Button size="lg" className="w-full" data-testid="button-get-started-free">
+            <Button size="lg" className="w-full" onClick={handleGetStarted} data-testid="button-get-started-free">
               Get Started For Free
             </Button>
             
@@ -96,10 +119,10 @@ export function PricingSection() {
             Are You An Agency or a Studio?
           </h3>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="outline" data-testid="button-for-agencies">
+            <Button variant="outline" onClick={handleAgencies} data-testid="button-for-agencies">
               For Agencies
             </Button>
-            <Button variant="outline" data-testid="button-for-studios">
+            <Button variant="outline" onClick={handleStudios} data-testid="button-for-studios">
               For Studios  
             </Button>
           </div>

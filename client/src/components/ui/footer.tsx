@@ -1,6 +1,30 @@
 import { Shield } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export function Footer() {
+  const { toast } = useToast();
+
+  const handleSocialClick = (platform: string) => {
+    toast({
+      title: `Visit our ${platform}!`,
+      description: `Follow BrandSafe on ${platform} for the latest updates.`,
+    });
+  };
+
+  const handleFooterLink = (section: string) => {
+    toast({
+      title: `${section} Page`,
+      description: `Navigate to ${section} section coming soon!`,
+    });
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="bg-foreground text-background py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,19 +43,19 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Product</h4>
             <ul className="space-y-2 text-gray-400">
               <li>
-                <a href="#features" className="hover:text-white transition-colors" data-testid="footer-link-features">
+                <button onClick={() => scrollToSection('features')} className="hover:text-white transition-colors" data-testid="footer-link-features">
                   Features
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#pricing" className="hover:text-white transition-colors" data-testid="footer-link-pricing">
+                <button onClick={() => scrollToSection('pricing')} className="hover:text-white transition-colors" data-testid="footer-link-pricing">
                   Pricing
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors" data-testid="footer-link-api">
+                <button onClick={() => handleFooterLink('API Docs')} className="hover:text-white transition-colors" data-testid="footer-link-api">
                   API Docs
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -40,19 +64,19 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Company</h4>
             <ul className="space-y-2 text-gray-400">
               <li>
-                <a href="#" className="hover:text-white transition-colors" data-testid="footer-link-about">
+                <button onClick={() => handleFooterLink('About')} className="hover:text-white transition-colors" data-testid="footer-link-about">
                   About
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#blog" className="hover:text-white transition-colors" data-testid="footer-link-blog">
+                <button onClick={() => scrollToSection('blog')} className="hover:text-white transition-colors" data-testid="footer-link-blog">
                   Blog
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors" data-testid="footer-link-careers">
+                <button onClick={() => handleFooterLink('Careers')} className="hover:text-white transition-colors" data-testid="footer-link-careers">
                   Careers
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -61,19 +85,19 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Legal</h4>
             <ul className="space-y-2 text-gray-400">
               <li>
-                <a href="#" className="hover:text-white transition-colors" data-testid="footer-link-privacy">
+                <button onClick={() => handleFooterLink('Privacy Policy')} className="hover:text-white transition-colors" data-testid="footer-link-privacy">
                   Privacy
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors" data-testid="footer-link-terms">
+                <button onClick={() => handleFooterLink('Terms of Service')} className="hover:text-white transition-colors" data-testid="footer-link-terms">
                   Terms
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors" data-testid="footer-link-dmca">
+                <button onClick={() => handleFooterLink('DMCA Policy')} className="hover:text-white transition-colors" data-testid="footer-link-dmca">
                   DMCA
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -84,15 +108,15 @@ export function Footer() {
             © 2024 BrandSafe. All rights reserved.
           </p>
           <div className="flex space-x-4">
-            <a href="#" className="text-gray-400 hover:text-white transition-colors" data-testid="footer-social-twitter">
+            <button onClick={() => handleSocialClick('Twitter')} className="text-gray-400 hover:text-white transition-colors" data-testid="footer-social-twitter">
               <i className="fab fa-twitter"></i>
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors" data-testid="footer-social-linkedin">
+            </button>
+            <button onClick={() => handleSocialClick('LinkedIn')} className="text-gray-400 hover:text-white transition-colors" data-testid="footer-social-linkedin">
               <i className="fab fa-linkedin"></i>
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors" data-testid="footer-social-instagram">
+            </button>
+            <button onClick={() => handleSocialClick('Instagram')} className="text-gray-400 hover:text-white transition-colors" data-testid="footer-social-instagram">
               <i className="fab fa-instagram"></i>
-            </a>
+            </button>
           </div>
         </div>
       </div>

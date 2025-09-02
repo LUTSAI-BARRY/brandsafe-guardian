@@ -1,7 +1,17 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 export function GooglePartnership() {
+  const { toast } = useToast();
+  
+  const handleGetStarted = () => {
+    toast({
+      title: "Join Google's Trusted Program!", 
+      description: "Start your free trial and gain access to Google's trusted copyright removal program.",
+    });
+  };
+  
   return (
     <section className="py-16 bg-muted">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -32,7 +42,7 @@ export function GooglePartnership() {
         </Card>
         
         <div>
-          <Button size="lg" data-testid="button-get-started-google">
+          <Button size="lg" onClick={handleGetStarted} data-testid="button-get-started-google">
             Get Started
           </Button>
         </div>

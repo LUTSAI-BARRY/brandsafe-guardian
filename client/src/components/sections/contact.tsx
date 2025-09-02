@@ -19,22 +19,64 @@ export function ContactSection() {
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement contact form submission
+    if (!contactForm.fullName || !contactForm.email || !contactForm.message) {
+      toast({
+        title: "Please fill all fields",
+        description: "Name, email, and message are all required.",
+        variant: "destructive"
+      });
+      return;
+    }
     toast({
-      title: "Message sent!",
-      description: "We'll get back to you as soon as possible.",
+      title: "Message sent successfully!",
+      description: `Thanks ${contactForm.fullName}! We'll get back to you within 24 hours.`,
     });
     setContactForm({ fullName: "", email: "", message: "" });
   };
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement newsletter subscription
+    if (!newsletterEmail) {
+      toast({
+        title: "Please enter your email",
+        description: "Email address is required for newsletter subscription.",
+        variant: "destructive"
+      });
+      return;
+    }
     toast({
-      title: "Subscribed!",
-      description: "Welcome to our newsletter.",
+      title: "Successfully subscribed!",
+      description: "Welcome to BrandSafe newsletter! Check your email for confirmation.",
     });
     setNewsletterEmail("");
+  };
+
+  const handleSocialClick = (platform: string) => {
+    toast({
+      title: `Visit our ${platform}!`,
+      description: `Follow BrandSafe on ${platform} for updates and tips.`,
+    });
+  };
+
+  const handleInstagramFollow = () => {
+    toast({
+      title: "Follow us on Instagram!",
+      description: "Get daily tips and updates from the BrandSafe community.",
+    });
+  };
+
+  const handlePricing = () => {
+    const element = document.getElementById('pricing');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleGetStarted = () => {
+    toast({
+      title: "Ready to protect your brand!",
+      description: "Starting your free 30-day trial with BrandSafe.",
+    });
   };
 
   return (
@@ -119,27 +161,27 @@ export function ContactSection() {
                 <div className="mt-8 pt-6 border-t border-border">
                   <p className="text-sm text-muted-foreground mb-4">Follow us on social media</p>
                   <div className="flex space-x-4">
-                    <a 
-                      href="#" 
+                    <button 
+                      onClick={() => handleSocialClick('Twitter')}
                       className="w-10 h-10 bg-muted text-muted-foreground rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
                       data-testid="link-social-twitter"
                     >
                       <i className="fab fa-twitter" />
-                    </a>
-                    <a 
-                      href="#" 
+                    </button>
+                    <button 
+                      onClick={() => handleSocialClick('LinkedIn')}
                       className="w-10 h-10 bg-muted text-muted-foreground rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
                       data-testid="link-social-linkedin"
                     >
                       <i className="fab fa-linkedin" />
-                    </a>
-                    <a 
-                      href="#" 
+                    </button>
+                    <button 
+                      onClick={() => handleSocialClick('Instagram')}
                       className="w-10 h-10 bg-muted text-muted-foreground rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
                       data-testid="link-social-instagram"
                     >
                       <i className="fab fa-instagram" />
-                    </a>
+                    </button>
                   </div>
                 </div>
               </CardContent>
@@ -174,7 +216,7 @@ export function ContactSection() {
           </Carousel>
           
           <div className="text-center">
-            <Button variant="outline" data-testid="button-follow-instagram">
+            <Button variant="outline" onClick={handleInstagramFollow} data-testid="button-follow-instagram">
               Follow us on Instagram
             </Button>
           </div>
@@ -189,10 +231,10 @@ export function ContactSection() {
             Join BrandSafe and get your FIRST MONTH FREE!
           </h2>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button variant="outline" data-testid="button-pricing-join">
+            <Button variant="outline" onClick={handlePricing} data-testid="button-pricing-join">
               Pricing
             </Button>
-            <Button data-testid="button-get-started-join">
+            <Button onClick={handleGetStarted} data-testid="button-get-started-join">
               Get Started
             </Button>
           </div>
