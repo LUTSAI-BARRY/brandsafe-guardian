@@ -19,11 +19,20 @@ Preferred communication style: Simple, everyday language.
 - **Forms**: React Hook Form with Zod validation via @hookform/resolvers
 
 ## Backend Architecture
+### Express.js Backend (Original)
 - **Runtime**: Node.js with Express.js web framework
 - **Language**: TypeScript with ES modules
 - **API Pattern**: RESTful API with /api prefix routing
 - **Request Handling**: Express middleware for JSON parsing and request logging
 - **Error Handling**: Centralized error handling middleware with structured error responses
+
+### Django REST Framework Backend (New)
+- **Framework**: Django 5.2.6 with Django REST Framework
+- **Authentication**: JWT authentication with SimpleJWT
+- **API Documentation**: Swagger/OpenAPI with drf-yasg
+- **CORS**: Configured for frontend integration
+- **Models**: UserProfile, ModerationLog, APIUsageLog with proper relationships
+- **Features**: Content moderation API, dashboard analytics, admin interface
 
 ## Development Setup
 - **Build System**: Vite for frontend bundling, esbuild for backend compilation
@@ -54,6 +63,7 @@ Preferred communication style: Simple, everyday language.
 ## Database
 - **Neon Database**: Serverless PostgreSQL provider (@neondatabase/serverless)
 - **Connection**: PostgreSQL via DATABASE_URL environment variable
+- **Django Backend**: SQLite for development, PostgreSQL ready for production
 
 ## UI Framework
 - **Radix UI**: Complete suite of unstyled, accessible UI primitives
