@@ -1,19 +1,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Menu, Shield } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Link } from "wouter";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showSignIn, setShowSignIn] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
-  const [signInForm, setSignInForm] = useState({ email: "", password: "" });
-  const [signUpForm, setSignUpForm] = useState({ name: "", email: "", password: "" });
-  const { toast } = useToast();
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -21,30 +13,6 @@ export function Navigation() {
       element.scrollIntoView({ behavior: 'smooth' });
     }
     setIsOpen(false);
-  };
-
-  const handleSignIn = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Welcome back!",
-      description: "Sign in functionality would connect to your backend here.",
-    });
-    setShowSignIn(false);
-    setSignInForm({ email: "", password: "" });
-  };
-
-  const handleSignUp = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Account created!",
-      description: "Your free 30-day trial has started. Welcome to BrandSafe!",
-    });
-    setShowSignUp(false);
-    setSignUpForm({ name: "", email: "", password: "" });
-  };
-
-  const handleGetStarted = () => {
-    setShowSignUp(true);
   };
 
   return (
@@ -88,112 +56,12 @@ export function Navigation() {
           </div>
           
           <div className="hidden md:flex items-center space-x-4">
-            <Dialog open={showSignIn} onOpenChange={setShowSignIn}>
-              <DialogTrigger asChild>
-                <Button variant="ghost" data-testid="button-signin">Sign In</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Sign In to BrandSafe</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSignIn} className="space-y-4">
-                  <div>
-                    <Label htmlFor="signin-email">Email</Label>
-                    <Input
-                      id="signin-email"
-                      type="email"
-                      value={signInForm.email}
-                      onChange={(e) => setSignInForm(prev => ({ ...prev, email: e.target.value }))}
-                      required
-                      data-testid="input-signin-email"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="signin-password">Password</Label>
-                    <Input
-                      id="signin-password"
-                      type="password"
-                      value={signInForm.password}
-                      onChange={(e) => setSignInForm(prev => ({ ...prev, password: e.target.value }))}
-                      required
-                      data-testid="input-signin-password"
-                    />
-                  </div>
-                  <Button type="submit" className="w-full" data-testid="button-signin-submit">
-                    Sign In
-                  </Button>
-                  <p className="text-center text-sm text-muted-foreground">
-                    Don't have an account?{" "}
-                    <button
-                      type="button"
-                      onClick={() => { setShowSignIn(false); setShowSignUp(true); }}
-                      className="text-primary hover:underline"
-                    >
-                      Sign up here
-                    </button>
-                  </p>
-                </form>
-              </DialogContent>
-            </Dialog>
-            
-            <Dialog open={showSignUp} onOpenChange={setShowSignUp}>
-              <DialogTrigger asChild>
-                <Button onClick={handleGetStarted} data-testid="button-get-started">Get Started Free</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Start Your Free 30-Day Trial</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSignUp} className="space-y-4">
-                  <div>
-                    <Label htmlFor="signup-name">Full Name</Label>
-                    <Input
-                      id="signup-name"
-                      type="text"
-                      value={signUpForm.name}
-                      onChange={(e) => setSignUpForm(prev => ({ ...prev, name: e.target.value }))}
-                      required
-                      data-testid="input-signup-name"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="signup-email">Email</Label>
-                    <Input
-                      id="signup-email"
-                      type="email"
-                      value={signUpForm.email}
-                      onChange={(e) => setSignUpForm(prev => ({ ...prev, email: e.target.value }))}
-                      required
-                      data-testid="input-signup-email"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="signup-password">Password</Label>
-                    <Input
-                      id="signup-password"
-                      type="password"
-                      value={signUpForm.password}
-                      onChange={(e) => setSignUpForm(prev => ({ ...prev, password: e.target.value }))}
-                      required
-                      data-testid="input-signup-password"
-                    />
-                  </div>
-                  <Button type="submit" className="w-full" data-testid="button-signup-submit">
-                    Start Free Trial
-                  </Button>
-                  <p className="text-center text-sm text-muted-foreground">
-                    Already have an account?{" "}
-                    <button
-                      type="button"
-                      onClick={() => { setShowSignUp(false); setShowSignIn(true); }}
-                      className="text-primary hover:underline"
-                    >
-                      Sign in here
-                    </button>
-                  </p>
-                </form>
-              </DialogContent>
-            </Dialog>
+            <Link href="/signin">
+              <Button variant="ghost" data-testid="button-signin">Sign In</Button>
+            </Link>
+            <Link href="/signup">
+              <Button data-testid="button-get-started">Get Started Free</Button>
+            </Link>
           </div>
           
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -233,21 +101,25 @@ export function Navigation() {
                   FAQ
                 </button>
                 <div className="pt-4 border-t border-border">
-                  <Button 
-                    variant="ghost" 
-                    className="w-full justify-start mb-2" 
-                    onClick={() => { setIsOpen(false); setShowSignIn(true); }}
-                    data-testid="mobile-button-signin"
-                  >
-                    Sign In
-                  </Button>
-                  <Button 
-                    className="w-full" 
-                    onClick={() => { setIsOpen(false); setShowSignUp(true); }}
-                    data-testid="mobile-button-get-started"
-                  >
-                    Get Started Free
-                  </Button>
+                  <Link href="/signin" className="block mb-2">
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start" 
+                      onClick={() => setIsOpen(false)}
+                      data-testid="mobile-button-signin"
+                    >
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/signup" className="block">
+                    <Button 
+                      className="w-full" 
+                      onClick={() => setIsOpen(false)}
+                      data-testid="mobile-button-get-started"
+                    >
+                      Get Started Free
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </SheetContent>
