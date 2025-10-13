@@ -1,0 +1,176 @@
+Project name: BrandSafe — Auth + Dashboard (React + Vite + TypeScript + Tailwind + shadcn-ui) + Express + MongoDB (MERN)
+
+Goal
+-----
+Create a full-stack repository that includes:
+1. Public landing page (exact layout and style remain as the existing BrandSafe landing page).
+2. Working authentication (email + password) with secure JWT sessions.
+3. Protected dashboard for logged-in users with a fresh UI containing: Analytics, Reports, Documents, Settings.
+4. REST API backend using Node.js + Express + TypeScript + Mongoose (MongoDB).
+5. Frontend using React 18 + Vite + TypeScript + Tailwind CSS + shadcn-ui components.
+6. Easy local dev: `npm install` + `npm run dev` in frontend & backend.
+7. Clear README with setup and environment variables.
+
+High-level requirements
+-----------------------
+- Keep the landing page UI identical to the screenshot (brand fonts, hero copy, navigation).
+- Provide Sign In and Sign Up pages reachable from landing page header (Sign In, Get Started).
+- After successful login, redirect to `/dashboard` (protected client route).
+- Dashboard must be built fresh (not the old Lovable UI) but include the following panels:
+  - Analytics summary (cards for visits, bounce rate, avg session)
+  - Search tool to look up social handles (platform + username input) — this can be wired to a mock endpoint that returns realistic sample analytics for the handle.
+  - Reports list (CRUD via API)
+  - Documents upload list (file upload stored locally for development)
+  - Settings panel (update profile and notification preference)
+- Frontend should use React Query (TanStack) for API calls and React Hook Form + Zod for forms.
+- Use shadcn-ui for UI components, Tailwind for styling, and Radix primitives when necessary.
+
+Repository structure to generate
+--------------------------------
+brandsafe/
+├── backend/
+│   ├── src/
+│   │   ├── server.ts            # Express app entry (TS)
+│   │   ├── app.ts               # express setup, middlewares, routes
+│   │   ├── routes/
+│   │   │   ├── auth.routes.ts
+│   │   │   ├── analytics.routes.ts
+│   │   │   ├── reports.routes.ts
+│   │   │   └── documents.routes.ts
+│   │   ├── controllers/
+│   │   ├── services/
+│   │   ├── models/              # Mongoose models (User, Report, Document, Analytics)
+│   │   ├── middleware/          # auth middleware, error handler
+│   │   └── utils/               # jwt, validator helpers
+│   ├── package.json
+│   └── tsconfig.json
+├── frontend/
+│   ├── src/
+│   │   ├── main.tsx
+│   │   ├── App.tsx
+│   │   ├── pages/
+│   │   │   ├── Landing.tsx
+│   │   │   ├── SignIn.tsx
+│   │   │   ├── SignUp.tsx
+│   │   │   └── Dashboard/
+│   │   │       ├── index.tsx
+│   │   │       ├── AnalyticsPanel.tsx
+│   │   │       ├── SearchAccounts.tsx
+│   │   │       ├── ReportsPage.tsx
+│   │   │       ├── DocumentsPage.tsx
+│   │   │       └── SettingsPage.tsx
+│   │   ├── components/
+│   │   ├── lib/
+│   │   │   └── api.ts           # Axios wrapper + auth token handling
+│   │   ├── hooks/
+│   │   ├── styles/
+│   │   ├── routes.tsx
+│   │   └── types/
+│   ├── index.html
+│   ├── package.json
+│   └── tsconfig.json
+├── .env.example
+└── README.md
+
+Backend requirements (detailed)
+-------------------------------
+- Node 20+ with TypeScript.
+- Use Express and Mongoose.
+- Models:
+  - User: { _id, name, email (unique), passwordHash, role, createdAt }
+  - Report: { _id, title, brandId (userId), fileUrl, createdAt }
+  - Document: { _id, name, fileUrl, uploadedBy, uploadedAt }
+  - Analytics: { _id, platform, handle, views, followers, avgSession, bounceRate, timestamp }
+- Auth:
+  - POST /api/auth/signup → create user, hash password with bcrypt, respond with accessToken (JWT) and user info (except password).
+  - POST /api/auth/login → verify credentials, return accessToken (JWT).
+  - GET /api/auth/me → get user from token.
+  - Use HTTP-only cookie and Authorization header support (bearer).
+  - JWT secret loaded from env (JWT_SECRET). Short expiry (1h) and refresh token (optional placeholder).
+- Protected routes: middleware verifies JWT and sets req.user.
+- File uploads (documents/reports): use multer to store files in `backend/uploads/` for dev.
+- Search API:
+  - POST /api/analytics/search — accepts { platform, username } and returns mock analytics for dev (simulate realistic numbers). Add caching in-memory for repeated queries.
+- CORS: enable for frontend origin (http://localhost:5173) and allow credentials.
+- Error handling middleware with structured JSON errors: { error, message, code }.
+
+Frontend requirements (detailed)
+-------------------------------
+- Vite + React + TypeScript.
+- Tailwind CSS configured with a custom theme to match BrandSafe brand colors.
+- shadcn-ui components used for header, buttons, forms, cards, modal.
+- Routing:
+  - Public routes: / (Landing), /signin, /signup.
+  - Protected route: /dashboard (redirect to /signin if not authenticated).
+- Auth flow:
+  - Signup page uses React Hook Form + Zod for validation, posts to /api/auth/signup.
+  - Login page posts to /api/auth/login. On success store JWT in memory and prefer HTTP-only cookie; fallback store in localStorage for dev.
+  - Use React Query to fetch user/me and set auth state.
+- Dashboard:
+  - Top navbar with search (platform + handle) and quick stats cards (visits, bounce rate).
+  - AnalyticsPanel: show bar chart or sparkline using a simple chart library (recharts or chart.js).
+  - ReportsPage: list of reports from /api/reports, ability to create and delete.
+  - DocumentsPage: upload file to /api/documents/upload and list files.
+  - SettingsPage: profile update to /api/settings (can be stored in user record).
+- Provide mock sample data for the search results in dev.
+
+Environment variables (.env.example)
+-----------------------------------
+# Backend
+MONGO_URI=mongodb://localhost:27017/brandsafe_dev
+PORT=4000
+JWT_SECRET=change_this_to_a_strong_secret
+FRONTEND_URL=http://localhost:5173
+
+# Frontend
+VITE_API_BASE_URL=http://localhost:4000/api
+
+Dev scripts to include
+----------------------
+# backend/package.json
+"dev": "ts-node-dev --respawn --transpile-only src/server.ts"
+
+# frontend/package.json
+"dev": "vite"
+
+README (basic run steps)
+------------------------
+1. Clone repo
+2. Copy `.env.example` to `.env` and set values
+3. Run backend:
+   cd backend
+   npm install
+   npm run dev
+4. Run frontend:
+   cd frontend
+   npm install
+   npm run dev
+5. Visit http://localhost:5173 to view landing page. Sign up / sign in to access /dashboard.
+
+Testing & Postman examples
+--------------------------
+- POST http://localhost:4000/api/auth/signup
+  body: { "name": "Test User", "email": "test@example.com", "password": "Str0ngPass!" }
+
+- POST http://localhost:4000/api/auth/login
+  body: { "email": "test@example.com", "password": "Str0ngPass!" }
+
+- POST http://localhost:4000/api/analytics/search
+  body: { "platform": "youtube", "username": "somechannel" }
+
+Bonus: production hints
+-----------------------
+- Use a dedicated MongoDB Atlas cluster for production and set MONGO_URI accordingly.
+- Store JWT_SECRET as env in the host.
+- Use cloud storage (S3) for file uploads in prod.
+- Add rate limiting on search endpoints.
+
+Developer notes for generator
+-----------------------------
+- Generate TypeScript types shared between frontend and backend in `/shared/types` if possible.
+- Provide a clear `.vscode/launch.json` or simple run commands in README.
+- Use function components and hooks on the frontend, keep components small and reusable.
+- Keep code modular: controllers/services/repositories.
+- Add minimal unit tests for auth service (optional).
+
+End of prompt.
