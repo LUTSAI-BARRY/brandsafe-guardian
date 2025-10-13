@@ -1,0 +1,389 @@
+ath that fits your existing setup and is fastest to get a real, secure login + dashboard working with the stack you already use.
+
+✅ Decision (recommended)
+
+Integrate with the existing Express.js backend and use PostgreSQL (Neon or local) via Drizzle ORM.
+Why:
+
+You already have an Express backend in the project — reusing it avoids duplication (no Django removal required).
+
+PostgreSQL is already present in your System Architecture, and Drizzle was listed — so this keeps the stack consistent and production-ready.
+
+This lets the React + Vite + TypeScript + Tailwind + shadcn-ui frontend authenticate via JWT and reach the fresh dashboard you wanted.
+
+Below I’ve generated copy-paste ready code for the core pieces you need immediately:
+
+Backend: Drizzle schema + user model, auth controller, auth routes, JWT util, auth middleware, and a small server.ts to wire things.
+
+Frontend: lib/api.ts (axios wrapper), SignUp.tsx, SignIn.tsx, and Dashboard/index.tsx skeleton using React + Tailwind + shadcn patterns.
+
+Everything uses environment variables so you can drop these into your repo, run npm install, set .env, and boot both sides.
+
+Backend — TypeScript (Express + Drizzle + Postgres)
+
+Create files under backend/src/...
+
+1) backend/src/db/schema.ts
+// Drizzle schema for users (drizzle-orm)
+import { pgTable, varchar, text, timestamp, serial } from "drizzle-orm/pg-core";
+
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 191 }).notNull(),
+  email: varchar("email", { length: 191 }).notNull().unique(),
+  password_hash: text("password_hash").notNull(),
+  role: varchar("role", { length: 50 }).notNull().default("creator"),
+  created_at: timestamp("created_at").defaultNow().notNull(),
+});
+
+2) backend/src/db/index.ts
+import { createPool } from "pg";
+import { drizzle } from "drizzle-orm/node-postgres";
+import * as schema from "./schema";
+
+const DATABASE_URL = process.env.DATABASE_URL || "postgresql://localhost/brandsafe";
+
+const pool = createPool({
+  connectionString: DATABASE_URL,
+});
+
+export const db = drizzle(pool);
+export { schema };
+
+3) backend/src/utils/jwt.ts
+import jwt from "jsonwebtoken";
+import { Request } from "express";
+
+const JWT_SECRET = process.env.JWT_SECRET || "change-me";
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "1h";
+
+export function signToken(payload: object) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+}
+
+export function verifyToken(token: string) {
+  return jwt.verify(token, JWT_SECRET);
+}
+
+export function getTokenFromReq(req: Request) {
+  const auth = req.headers.authorization;
+  if (auth && auth.startsWith("Bearer ")) return auth.split(" ")[1];
+  // optional: check cookies
+  return null;
+}
+
+4) backend/src/controllers/auth.controller.ts
+import { Request, Response } from "express";
+import bcrypt from "bcrypt";
+import { db } from "../db";
+import { users } from "../db/schema";
+import { signToken } from "../utils/jwt";
+
+const SALT_ROUNDS = 10;
+
+export async function signup(req: Request, res: Response) {
+  try {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    // check if exists
+    const existing = await db.select().from(users).where(users.email.eq(email)).limit(1);
+    if (existing.length) return res.status(409).json({ error: "Email already in use" });
+
+    const hash = await bcrypt.hash(password, SALT_ROUNDS);
+    const inserted = await db.insert(users).values({
+      name,
+      email,
+      password_hash: hash,
+    }).returning();
+
+    const user = inserted[0];
+    const token = signToken({ id: user.id, email: user.email, role: user.role });
+
+    res.json({
+      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+      token,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+}
+
+export async function login(req: Request, res: Response) {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ error: "Missing fields" });
+
+    const found = await db.select().from(users).where(users.email.eq(email)).limit(1);
+    const user = found[0];
+    if (!user) return res.status(401).json({ error: "Invalid credentials" });
+
+    const ok = await bcrypt.compare(password, user.password_hash);
+    if (!ok) return res.status(401).json({ error: "Invalid credentials" });
+
+    const token = signToken({ id: user.id, email: user.email, role: user.role });
+
+    res.json({
+      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+      token,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+}
+
+export async function me(req: Request, res: Response) {
+  // `req.user` should be set by auth middleware
+  const u = (req as any).user;
+  if (!u) return res.status(401).json({ error: "Not authenticated" });
+  res.json({ user: u });
+}
+
+5) backend/src/middleware/auth.ts
+import { Request, Response, NextFunction } from "express";
+import { getTokenFromReq, verifyToken } from "../utils/jwt";
+import { db } from "../db";
+import { users } from "../db/schema";
+
+export async function requireAuth(req: Request, res: Response, next: NextFunction) {
+  try {
+    const token = getTokenFromReq(req);
+    if (!token) return res.status(401).json({ error: "No token" });
+
+    const payload: any = verifyToken(token);
+    if (!payload?.id) return res.status(401).json({ error: "Invalid token" });
+
+    const found = await db.select().from(users).where(users.id.eq(payload.id)).limit(1);
+    const user = found[0];
+    if (!user) return res.status(401).json({ error: "User not found" });
+
+    // attach safe user object
+    (req as any).user = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+
+    next();
+  } catch (err) {
+    console.error("Auth error", err);
+    return res.status(401).json({ error: "Authentication failed" });
+  }
+}
+
+6) backend/src/routes/auth.routes.ts
+import { Router } from "express";
+import { signup, login, me } from "../controllers/auth.controller";
+import { requireAuth } from "../middleware/auth";
+
+const router = Router();
+
+router.post("/signup", signup);
+router.post("/login", login);
+router.get("/me", requireAuth, me);
+
+export default router;
+
+7) backend/src/server.ts
+import express from "express";
+import cors from "cors";
+import authRoutes from "./routes/auth.routes";
+import multer from "multer";
+
+const app = express();
+app.use(express.json());
+
+const FRONTEND = process.env.FRONTEND_URL || "http://localhost:5173";
+app.use(cors({ origin: FRONTEND, credentials: true }));
+
+// simple request logger
+app.use((req, _res, next) => { console.log(req.method, req.path); next(); });
+
+// routes
+app.use("/api/auth", authRoutes);
+
+// health
+app.get("/api/health", (_, res) => res.json({ ok: true }));
+
+const PORT = Number(process.env.PORT || 4000);
+app.listen(PORT, () => console.log(`Server listening on ${PORT}`));
+
+Backend notes
+
+Install packages:
+
+npm i express cors pg drizzle-orm node-postgres bcrypt jsonwebtoken multer
+npm i -D typescript ts-node-dev @types/express @types/node @types/jsonwebtoken @types/bcrypt
+
+
+Drizzle docs: adapt import names if your Drizzle version differs.
+
+Set .env:
+
+DATABASE_URL=postgresql://user:pass@host:5432/brandsafe
+JWT_SECRET=supersecret
+FRONTEND_URL=http://localhost:5173
+PORT=4000
+
+Frontend — React + Vite + TypeScript + Tailwind + shadcn-ui
+
+Place files under frontend/src/... (adjust imports to your existing routes/components)
+
+1) frontend/src/lib/api.ts
+import axios from "axios";
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api";
+
+const client = axios.create({
+  baseURL: API_BASE,
+  withCredentials: false, // if using cookies set true
+});
+
+export function setAuthToken(token?: string) {
+  if (token) client.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  else delete client.defaults.headers.common["Authorization"];
+}
+
+export default client;
+
+2) frontend/src/pages/SignUp.tsx
+import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import client, { setAuthToken } from "../lib/api";
+import { useNavigate } from "react-router-dom";
+
+const schema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  password: z.string().min(6),
+});
+
+type Form = z.infer<typeof schema>;
+
+export default function SignUp() {
+  const { register, handleSubmit, formState } = useForm<Form>({ resolver: zodResolver(schema) });
+  const navigate = useNavigate();
+
+  async function onSubmit(data: Form) {
+    try {
+      const res = await client.post("/auth/signup", data);
+      const { token } = res.data;
+      setAuthToken(token);
+      // optionally store token in localStorage for dev:
+      localStorage.setItem("brandsafe_token", token);
+      navigate("/dashboard");
+    } catch (err: any) {
+      alert(err?.response?.data?.error || "Signup failed");
+    }
+  }
+
+  return (
+    <div className="max-w-md mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-4">Create an account</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <input {...register("name")} placeholder="Full name" className="input" />
+        <input {...register("email")} placeholder="Email" className="input" />
+        <input {...register("password")} type="password" placeholder="Password" className="input" />
+        <button className="btn btn-primary" type="submit">Sign up</button>
+      </form>
+    </div>
+  );
+}
+
+3) frontend/src/pages/SignIn.tsx
+import React from "react";
+import { useForm } from "react-hook-form";
+import client, { setAuthToken } from "../lib/api";
+import { useNavigate } from "react-router-dom";
+
+type Form = { email: string; password: string };
+
+export default function SignIn() {
+  const { register, handleSubmit } = useForm<Form>();
+  const navigate = useNavigate();
+
+  async function onSubmit(data: Form) {
+    try {
+      const res = await client.post("/auth/login", data);
+      const { token } = res.data;
+      setAuthToken(token);
+      localStorage.setItem("brandsafe_token", token);
+      navigate("/dashboard");
+    } catch (err: any) {
+      alert(err?.response?.data?.error || "Login failed");
+    }
+  }
+
+  return (
+    <div className="max-w-md mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-4">Sign in</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <input {...register("email")} placeholder="Email" className="input" />
+        <input {...register("password")} type="password" placeholder="Password" className="input" />
+        <button className="btn btn-primary" type="submit">Sign in</button>
+      </form>
+    </div>
+  );
+}
+
+4) frontend/src/pages/Dashboard/index.tsx
+import React, { useEffect } from "react";
+import client from "../../lib/api";
+import { useNavigate } from "react-router-dom";
+
+export default function Dashboard() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // try to load token from storage and set header
+    const t = localStorage.getItem("brandsafe_token");
+    if (t) client.defaults.headers.common["Authorization"] = `Bearer ${t}`;
+    else navigate("/signin");
+  }, []);
+
+  return (
+    <div className="p-6">
+      <header className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold">BrandSafe Dashboard</h1>
+        <div>
+          <button
+            className="btn"
+            onClick={() => {
+              localStorage.removeItem("brandsafe_token");
+              delete client.defaults.headers.common["Authorization"];
+              navigate("/");
+            }}
+          >
+            Sign out
+          </button>
+        </div>
+      </header>
+
+      <section className="grid grid-cols-3 gap-4 mb-6">
+        <div className="card p-4">Visits <div className="text-2xl">—</div></div>
+        <div className="card p-4">Followers <div className="text-2xl">—</div></div>
+        <div className="card p-4">Bounce rate <div className="text-2xl">—</div></div>
+      </section>
+
+      <section className="mb-6">
+        <h2 className="text-lg font-semibold mb-2">Search account (mock)</h2>
+        {/* implement SearchAccounts component later */}
+        <div className="p-4 border rounded">Search form here</div>
+      </section>
+
+      <section>
+        <h2 className="text-lg font-semibold mb-2">Reports & Documents</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="p-4 border rounded">Reports list (mock)</div>
+          <div className="p-4 border rounded">Documents upload (mock)</div>
+        </div>
+      </section>
+    </div>
+  );
