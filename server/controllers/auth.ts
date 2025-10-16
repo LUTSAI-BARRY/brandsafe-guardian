@@ -7,94 +7,85 @@ import { fromZodError } from "zod-validation-error";
 
 const SALT_ROUNDS = 10;
 
-export async function signup(req: Request, res: Response): Promise<void> {
+// -------------------- SIGNUP --------------------
+export async function signup(req: Request, res: Response) {
   try {
-    const validated = insertUserSchema.safeParse(req.body);
-    
-    if (!validated.success) {
-      const error = fromZodError(validated.error);
-      res.status(400).json({ error: error.message });
-      return;
+    // Validate request body
+    const parseResult = insertUserSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      const error = fromZodError(parseResult.error);
+      return res.status(400).json({ error: error.message });
     }
 
-    const { name, email, password, role } = validated.data;
+    const { name, email, password, role } = parseResult.data;
 
-    const existing = await storage.getUserByEmail(email);
-    if (existing) {
-      res.status(409).json({ error: "Email already in use" });
-      return;
+    // Check if user already exists
+    const existingUser = await storage.user.findUnique({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ error: "User already exists" });
     }
 
+    // Hash the password
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
-    const user = await storage.createUser({
-      name,
-      email,
-      role: role || "creator",
-      passwordHash,
-    } as any);
 
+    // Create new user (schema expects "password")
+    const user = await storage.user.create({
+      data: {
+        name,
+        email,
+        role,
+        password: passwordHash,
+      },
+    });
+
+    // Generate JWT token
     const token = signToken({ id: user.id, email: user.email, role: user.role });
 
     res.status(201).json({
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      message: "User registered successfully",
+      user: { id: user.id, name: user.name, email: user.email, role: user.role },
       token,
     });
-  } catch (err) {
-    console.error("Signup error:", err);
-    res.status(500).json({ error: "Server error" });
+  } catch (error) {
+    console.error("Signup Error:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
-export async function login(req: Request, res: Response): Promise<void> {
+// -------------------- LOGIN --------------------
+export async function login(req: Request, res: Response) {
   try {
-    const validated = loginSchema.safeParse(req.body);
-    
-    if (!validated.success) {
-      const error = fromZodError(validated.error);
-      res.status(400).json({ error: error.message });
-      return;
+    // Validate request body
+    const parseResult = loginSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      const error = fromZodError(parseResult.error);
+      return res.status(400).json({ error: error.message });
     }
 
-    const { email, password } = validated.data;
+    const { email, password } = parseResult.data;
 
-    const user = await storage.getUserByEmail(email);
+    // Find user
+    const user = await storage.user.findUnique({ where: { email } });
     if (!user) {
-      res.status(401).json({ error: "Invalid credentials" });
-      return;
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    const isValid = await bcrypt.compare(password, user.passwordHash);
+    // Compare passwords
+    const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
-      res.status(401).json({ error: "Invalid credentials" });
-      return;
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
+    // Generate JWT token
     const token = signToken({ id: user.id, email: user.email, role: user.role });
 
-    res.json({
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+    res.status(200).json({
+      message: "Login successful",
+      user: { id: user.id, name: user.name, email: user.email, role: user.role },
       token,
     });
-  } catch (err) {
-    console.error("Login error:", err);
-    res.status(500).json({ error: "Server error" });
+  } catch (error) {
+    console.error("Login Error:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
-}
-
-export async function me(req: Request, res: Response): Promise<void> {
-  if (!req.user) {
-    res.status(401).json({ error: "Not authenticated" });
-    return;
-  }
-  res.json({ user: req.user });
 }

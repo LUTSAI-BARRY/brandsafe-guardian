@@ -1,0 +1,869 @@
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Safe - Comprehensive Brand Protection Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    destructive: {
+                        DEFAULT: "var(--destructive)",
+                        foreground: "var(--destructive-foreground)",
+                    },
+                    success: {
+                        DEFAULT: "var(--success)",
+                        foreground: "var(--success-foreground)",
+                    },
+                    warning: {
+                        DEFAULT: "var(--warning)",
+                        foreground: "var(--warning-foreground)",
+                    },
+                    border: "var(--border)",
+                    input: "var(--input)",
+                    ring: "var(--ring)",
+                },
+                fontFamily: {
+                    sans: ["var(--font-sans)"],
+                }
+            },
+        }
+    };
+    </script>
+    <style>
+    :root {
+        --radius: 0.5rem;
+        --background: hsl(220 13% 98%);
+        --foreground: hsl(220 13% 9%);
+        --card: hsl(0 0% 100%);
+        --card-foreground: hsl(220 13% 9%);
+        --primary: hsl(220 83% 38%);
+        --primary-foreground: hsl(0 0% 100%);
+        --secondary: hsl(220 13% 96%);
+        --secondary-foreground: hsl(220 13% 9%);
+        --muted: hsl(220 13% 96%);
+        --muted-foreground: hsl(220 13% 45%);
+        --accent: hsl(220 13% 96%);
+        --accent-foreground: hsl(220 13% 9%);
+        --destructive: hsl(0 75% 45%);
+        --destructive-foreground: hsl(0 0% 100%);
+        --success: hsl(142 71% 45%);
+        --success-foreground: hsl(0 0% 100%);
+        --warning: hsl(36 84% 47%);
+        --warning-foreground: hsl(0 0% 100%);
+        --border: hsl(220 13% 91%);
+        --input: hsl(220 13% 91%);
+        --ring: hsl(220 83% 38%);
+        --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    
+    .dark {
+        --background: hsl(220 13% 8%);
+        --foreground: hsl(220 13% 98%);
+        --card: hsl(220 13% 9%);
+        --card-foreground: hsl(220 13% 98%);
+        --primary: hsl(220 83% 55%);
+        --primary-foreground: hsl(220 13% 9%);
+        --secondary: hsl(220 13% 15%);
+        --secondary-foreground: hsl(220 13% 98%);
+        --muted: hsl(220 13% 15%);
+        --muted-foreground: hsl(220 13% 60%);
+        --accent: hsl(220 13% 15%);
+        --accent-foreground: hsl(220 13% 98%);
+        --border: hsl(220 13% 20%);
+        --input: hsl(220 13% 15%);
+    }
+
+    body {
+        font-family: var(--font-sans);
+        background-color: var(--background);
+        color: var(--foreground);
+    }
+
+    .animate-counter {
+        animation: countUp 2s ease-out;
+    }
+
+    @keyframes countUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .gradient-text {
+        background: linear-gradient(135deg, var(--primary) 0%, #3B82F6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    </style>
+</head>
+<body class="bg-background text-foreground">
+    <!-- Navigation -->
+    <!-- @COMPONENT: Navigation [fixed header with logo, menu items, and CTA button] -->
+    <nav class="fixed top-0 w-full bg-card/95 backdrop-blur-sm border-b border-border z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-shield-alt text-primary text-2xl"></i>
+                    <span class="text-xl font-bold text-foreground">Brand Safe</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#features" class="text-muted-foreground hover:text-primary transition-colors">Features</a>
+                    <a href="#pricing" class="text-muted-foreground hover:text-primary transition-colors">Pricing</a>
+                    <a href="#testimonials" class="text-muted-foreground hover:text-primary transition-colors">Testimonials</a>
+                    <a href="#faq" class="text-muted-foreground hover:text-primary transition-colors">FAQ</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-muted-foreground hover:text-primary">Sign In</button>
+                    <button class="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">Get Started Free</button>
+                </div>
+                <button class="md:hidden text-muted-foreground">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: Navigation -->
+
+    <!-- Hero Section -->
+    <!-- @COMPONENT: HeroSection [main landing section with headline, description, and CTA] -->
+    <section class="pt-24 pb-16 bg-gradient-to-br from-background to-muted">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">
+                    <i class="fas fa-award mr-2"></i>
+                    Most Trusted. Award Winning.
+                </div>
+                <h1 class="text-4xl sm:text-6xl font-bold text-foreground mb-6">
+                    Comprehensive Brand Protection for <span class="gradient-text">Modern Businesses</span>
+                </h1>
+                <p class="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+                    Brand Safe is the industry's most trusted and advanced brand protection service. 
+                    It safeguards your brand by identifying, monitoring, and removing counterfeit content and infringements.
+                </p>
+                <button class="bg-primary text-primary-foreground px-8 py-4 rounded-xl text-lg font-semibold hover:bg-primary/90 transition-all transform hover:scale-105 shadow-lg mb-12">
+                    30 Days Free Protection
+                </button>
+            </div>
+
+            <!-- Instant Check Section -->
+            <div class="max-w-md mx-auto">
+                <div class="bg-card border border-border rounded-xl p-6 shadow-lg">
+                    <h3 class="text-lg font-semibold mb-4 text-center">Instant Check</h3>
+                    <p class="text-muted-foreground text-center mb-4">Do you have any infringements?</p>
+                    <div class="flex space-x-2">
+                        <input type="text" placeholder="Enter your brand name..." class="flex-1 px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring bg-background">
+                        <button class="bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors">
+                            Scan Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: HeroSection -->
+
+    <!-- Features Section -->
+    <!-- @COMPONENT: FeaturesSection [grid of feature cards with icons and descriptions] -->
+    <section id="features" class="py-20 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">What We Do For You</h2>
+                <p class="text-muted-foreground text-lg">Comprehensive brand protection across all digital channels</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Daily Scans -->
+                <div class="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-search text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Daily Scans</h3>
+                    <p class="text-muted-foreground">Advanced AI software performs comprehensive scans to detect brand copyright infringements using facial recognition and keyword analysis.</p>
+                </div>
+
+                <!-- Google Delisting -->
+                <div class="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-success/10 text-success rounded-lg flex items-center justify-center mb-6">
+                        <i class="fab fa-google text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Google Delisting</h3>
+                    <p class="text-muted-foreground">Member of Google's Trusted Copyright Removal Program for rapid delisting of infringing content from search results.</p>
+                </div>
+
+                <!-- DMCA Takedowns -->
+                <div class="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-destructive/10 text-destructive rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-gavel text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">DMCA Takedowns</h3>
+                    <p class="text-muted-foreground">Automated DMCA takedown notices issued to internet authorities for rapid content removal and brand protection.</p>
+                </div>
+
+                <!-- Catfish Removals -->
+                <div class="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-warning/10 text-warning rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-user-shield text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Identity Protection</h3>
+                    <p class="text-muted-foreground">Detect and remove fake accounts and imposters across major social media platforms to maintain authentic brand presence.</p>
+                </div>
+
+                <!-- Auto-Takedowns -->
+                <div class="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-accent/10 text-accent-foreground rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-robot text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Auto-Takedowns</h3>
+                    <p class="text-muted-foreground">Automated software detects and sends takedown requests on your behalf for worry-free brand protection.</p>
+                </div>
+
+                <!-- Reporting -->
+                <div class="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Advanced Reporting</h3>
+                    <p class="text-muted-foreground">Comprehensive reports streamline rapid cease & desist processes and Google delistings to infringing domains.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: FeaturesSection -->
+
+    <!-- Revenue Boost Section -->
+    <!-- @COMPONENT: RevenueBoosting [benefit explanation section with visual elements] -->
+    <section class="py-20 bg-muted">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">Reclaim Your Revenue</h2>
+                    <p class="text-lg text-muted-foreground mb-8">
+                        Brand Safe helps you boost revenue, mitigate scams using your name, and increase traffic by ensuring customers access your legitimate content first.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 bg-success rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-success-foreground text-xs"></i>
+                            </div>
+                            <span>Increase legitimate traffic by removing competing pirated content</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 bg-success rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-success-foreground text-xs"></i>
+                            </div>
+                            <span>Protect brand reputation from counterfeit associations</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 bg-success rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-success-foreground text-xs"></i>
+                            </div>
+                            <span>Reduce customer confusion and lost sales</span>
+                        </div>
+                    </div>
+                    <button class="bg-primary text-primary-foreground px-8 py-3 rounded-lg mt-8 hover:bg-primary/90 transition-colors">
+                        Get Started
+                    </button>
+                </div>
+                <div>
+                    <!-- Professional business analytics dashboard visualization -->
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" alt="Analytics dashboard showing brand protection metrics" class="rounded-xl shadow-lg w-full h-auto">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: RevenueBoosting -->
+
+    <!-- Statistics Section -->
+    <!-- @COMPONENT: Statistics [animated counters showing platform performance] -->
+    <section class="py-16 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Stats Don't Lie!</h2>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-primary mb-2 animate-counter" data-target="99">99%</div>
+                    <div class="text-muted-foreground">Precision</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-primary mb-2 animate-counter" data-target="5">5M+</div>
+                    <div class="text-muted-foreground">Infringements Found</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-primary mb-2 animate-counter" data-target="2">2B+</div>
+                    <div class="text-muted-foreground">Blocked Views</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-primary mb-2 animate-counter" data-target="50">$50M+</div>
+                    <div class="text-muted-foreground">Revenue Protected</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Statistics -->
+
+    <!-- Testimonials Section -->
+    <!-- @COMPONENT: TestimonialCarousel [rotating customer testimonials with photos] -->
+    <section id="testimonials" class="py-20 bg-muted">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">What People Are Talking About</h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- @MAP: testimonials.map(testimonial => ( -->
+                <div class="bg-card border border-border rounded-xl p-6">
+                    <!-- Professional business executive headshot -->
+                    <img src="https://pixabay.com/get/g15353918cdd7acde0cbd041e843d65eee51b398556933144188e62158c00c05a174060638ac2e759c9dae1d392b3893dbda693a2a77403184a82c0d5fef88c6a_1280.jpg" alt="Sarah Chen, Marketing Director" class="w-16 h-16 rounded-full mb-4 object-cover">
+                    <p class="text-muted-foreground mb-4">"After years of fighting brand infringement alone, Brand Safe's tools are the ones I trust with my company's reputation. They make protection effortless."</p>
+                    <div class="font-semibold">— Sarah Chen</div>
+                    <div class="text-sm text-muted-foreground">Marketing Director</div>
+                </div>
+
+                <div class="bg-card border border-border rounded-xl p-6">
+                    <!-- Professional business woman executive -->
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150" alt="Maria Rodriguez, Brand Manager" class="w-16 h-16 rounded-full mb-4 object-cover">
+                    <p class="text-muted-foreground mb-4">"With Brand Safe, I love the control it gives me. The intelligence on who's infringing our brand is invaluable."</p>
+                    <div class="font-semibold">— Maria Rodriguez</div>
+                    <div class="text-sm text-muted-foreground">Brand Manager</div>
+                </div>
+
+                <div class="bg-card border border-border rounded-xl p-6">
+                    <!-- Professional businessman headshot -->
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150" alt="David Thompson, CEO" class="w-16 h-16 rounded-full mb-4 object-cover">
+                    <p class="text-muted-foreground mb-4">"Brand Safe is like having a security team that never sleeps. They fight infringement when we're focused on growing our business."</p>
+                    <div class="font-semibold">— David Thompson</div>
+                    <div class="text-sm text-muted-foreground">CEO</div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: TestimonialCarousel -->
+
+    <!-- Pricing Section -->
+    <!-- @COMPONENT: PricingSection [pricing cards with feature lists and billing toggle] -->
+    <section id="pricing" class="py-20 bg-background">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Best Value in the Industry</h2>
+                <div class="inline-flex bg-muted rounded-lg p-1">
+                    <button class="px-4 py-2 bg-card text-foreground rounded-md shadow-sm">Monthly</button>
+                    <button class="px-4 py-2 text-muted-foreground">Annual</button>
+                </div>
+            </div>
+
+            <div class="bg-card border-2 border-primary rounded-2xl p-8 relative">
+                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-medium">
+                    Most Popular
+                </div>
+                
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold mb-2">Premium</h3>
+                    <div class="mb-4">
+                        <span class="text-5xl font-bold">FREE</span>
+                        <div class="text-muted-foreground">FIRST MONTH</div>
+                    </div>
+                    <div class="text-muted-foreground">then $49/mo</div>
+                    <div class="mt-2 text-success font-semibold">$588 value - 2 FREE MONTHS</div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>Unlimited DMCA Takedowns</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>Unlimited Google Delisting</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>Social Media Monitoring</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>Auto-Takedowns</span>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>5 Brand Names</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>Email Reports</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>Daily Scans</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>24/7 Support</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="w-full bg-primary text-primary-foreground py-4 rounded-lg text-lg font-semibold hover:bg-primary/90 transition-colors">
+                    Get Started For Free
+                </button>
+                
+                <p class="text-center text-muted-foreground text-sm mt-4">No commitments, cancel anytime.</p>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: PricingSection -->
+
+    <!-- Google Partnership -->
+    <!-- @COMPONENT: GooglePartnership [trust badge and partnership information] -->
+    <section class="py-16 bg-muted">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-8">Trusted By Google</h2>
+            <p class="text-lg text-muted-foreground mb-8">
+                The Trusted Copyright Removal Program (TCRP) enables high-volume submitters to send high-quality notices for copyright removal requests on Google Search, Blogger, Docs...
+            </p>
+            <div class="inline-flex items-center bg-card border border-border rounded-xl p-6 shadow-lg">
+                <i class="fab fa-google text-4xl text-primary mr-4"></i>
+                <div class="text-left">
+                    <div class="font-bold text-lg">Official Member</div>
+                    <div class="text-muted-foreground">Google Trusted Copyright Removal Program</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: GooglePartnership -->
+
+    <!-- Dashboard Preview -->
+    <!-- @COMPONENT: DashboardPreview [mockup of the actual dashboard interface] -->
+    <section class="py-20 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Professional Dashboard</h2>
+                <p class="text-lg text-muted-foreground">Monitor and manage all your brand protection activities in one place</p>
+            </div>
+            
+            <!-- Mock Dashboard -->
+            <div class="bg-card border border-border rounded-2xl p-6 shadow-2xl">
+                <!-- Dashboard Header -->
+                <div class="flex justify-between items-center mb-8 pb-4 border-b border-border">
+                    <h3 class="text-xl font-semibold">Brand Protection Dashboard</h3>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 bg-success rounded-full"></div>
+                        <span class="text-sm text-muted-foreground">All systems operational</span>
+                    </div>
+                </div>
+
+                <!-- Dashboard Stats -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+                        <div class="text-2xl font-bold text-destructive">23</div>
+                        <div class="text-sm text-muted-foreground">Active Threats</div>
+                    </div>
+                    <div class="bg-warning/10 border border-warning/20 rounded-lg p-4">
+                        <div class="text-2xl font-bold text-warning">147</div>
+                        <div class="text-sm text-muted-foreground">Pending Takedowns</div>
+                    </div>
+                    <div class="bg-success/10 border border-success/20 rounded-lg p-4">
+                        <div class="text-2xl font-bold text-success">1,284</div>
+                        <div class="text-sm text-muted-foreground">Removed This Month</div>
+                    </div>
+                    <div class="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                        <div class="text-2xl font-bold text-primary">98.7%</div>
+                        <div class="text-sm text-muted-foreground">Success Rate</div>
+                    </div>
+                </div>
+
+                <!-- Mock Data Table -->
+                <div class="bg-background border border-border rounded-lg">
+                    <div class="px-6 py-4 border-b border-border">
+                        <h4 class="font-semibold">Recent Detections</h4>
+                    </div>
+                    <div class="divide-y divide-border">
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <div>
+                                <div class="font-medium">example-piracy-site.com</div>
+                                <div class="text-sm text-muted-foreground">Unauthorized content detected</div>
+                            </div>
+                            <span class="bg-destructive/10 text-destructive px-2 py-1 rounded-full text-xs">High Risk</span>
+                        </div>
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <div>
+                                <div class="font-medium">fake-brand-account</div>
+                                <div class="text-sm text-muted-foreground">Social media impersonation</div>
+                            </div>
+                            <span class="bg-warning/10 text-warning px-2 py-1 rounded-full text-xs">Medium Risk</span>
+                        </div>
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <div>
+                                <div class="font-medium">counterfeit-store.net</div>
+                                <div class="text-sm text-muted-foreground">Trademark infringement</div>
+                            </div>
+                            <span class="bg-success/10 text-success px-2 py-1 rounded-full text-xs">Resolved</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: DashboardPreview -->
+
+    <!-- App Screenshots -->
+    <!-- @COMPONENT: AppScreenshots [carousel of mobile interface screenshots] -->
+    <section class="py-20 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Mobile App Interface</h2>
+                <p class="text-lg text-muted-foreground">Manage your brand protection on the go</p>
+            </div>
+            
+            <div class="flex overflow-x-auto space-x-6 pb-4">
+                <!-- Mobile dashboard interface showing brand protection metrics -->
+                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=600" alt="Mobile dashboard interface" class="flex-shrink-0 w-72 rounded-2xl shadow-lg">
+                
+                <!-- Mobile security monitoring interface -->
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=600" alt="Security monitoring mobile interface" class="flex-shrink-0 w-72 rounded-2xl shadow-lg">
+                
+                <!-- Mobile analytics interface showing charts -->
+                <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=600" alt="Mobile analytics interface" class="flex-shrink-0 w-72 rounded-2xl shadow-lg">
+                
+                <!-- Mobile notification interface for alerts -->
+                <img src="https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=600" alt="Mobile notification interface" class="flex-shrink-0 w-72 rounded-2xl shadow-lg">
+            </div>
+
+            <div class="text-center mt-12">
+                <h3 class="text-2xl font-semibold mb-4">Download for Android and iOS</h3>
+                <p class="text-lg text-muted-foreground mb-6">3 Million users and counting!</p>
+                <div class="flex justify-center space-x-4">
+                    <button class="bg-foreground text-background px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-foreground/90 transition-colors">
+                        <i class="fab fa-apple text-xl"></i>
+                        <span>App Store</span>
+                    </button>
+                    <button class="bg-foreground text-background px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-foreground/90 transition-colors">
+                        <i class="fab fa-google-play text-xl"></i>
+                        <span>Google Play</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: AppScreenshots -->
+
+    <!-- FAQ Section -->
+    <!-- @COMPONENT: FAQ [expandable frequently asked questions] -->
+    <section id="faq" class="py-20 bg-muted">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-card border border-border rounded-lg">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-muted transition-colors" onclick="toggleFAQ(0)">
+                        <span class="font-medium">What is a DMCA Takedown?</span>
+                        <i class="fas fa-chevron-down transform transition-transform" id="faq-icon-0"></i>
+                    </button>
+                    <div class="px-6 pb-4 hidden" id="faq-content-0">
+                        <p class="text-muted-foreground">A DMCA takedown allows copyright owners to request removal of their copyrighted content from websites without permission. Our automated system handles the entire process for rapid content removal.</p>
+                    </div>
+                </div>
+
+                <div class="bg-card border border-border rounded-lg">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-muted transition-colors" onclick="toggleFAQ(1)">
+                        <span class="font-medium">How Can Brand Safe Improve My Business?</span>
+                        <i class="fas fa-chevron-down transform transition-transform" id="faq-icon-1"></i>
+                    </button>
+                    <div class="px-6 pb-4 hidden" id="faq-content-1">
+                        <p class="text-muted-foreground">By removing infringing content, we help boost your revenue, reduce customer confusion, and ensure your legitimate content ranks higher in search results.</p>
+                    </div>
+                </div>
+
+                <div class="bg-card border border-border rounded-lg">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-muted transition-colors" onclick="toggleFAQ(2)">
+                        <span class="font-medium">Will all infringing content be removed?</span>
+                        <i class="fas fa-chevron-down transform transition-transform" id="faq-icon-2"></i>
+                    </button>
+                    <div class="px-6 pb-4 hidden" id="faq-content-2">
+                        <p class="text-muted-foreground">While not all sites comply with DMCA, we delist non-compliant sites from search results, reducing their visibility and protecting your brand reputation.</p>
+                    </div>
+                </div>
+
+                <div class="bg-card border border-border rounded-lg">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-muted transition-colors" onclick="toggleFAQ(3)">
+                        <span class="font-medium">Can I report URLs I find manually?</span>
+                        <i class="fas fa-chevron-down transform transition-transform" id="faq-icon-3"></i>
+                    </button>
+                    <div class="px-6 pb-4 hidden" id="faq-content-3">
+                        <p class="text-muted-foreground">Yes! Our self-submission tool allows unlimited manual reporting of infringing URLs from websites or social media platforms.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: FAQ -->
+
+    <!-- Blog Section -->
+    <!-- @COMPONENT: BlogSection [latest blog posts with thumbnails] -->
+    <section class="py-20 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">The Latest from Our Blog</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <article class="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
+                    <!-- Legal documents and DMCA paperwork on desk -->
+                    <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200" alt="DMCA and legal documents" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-semibold mb-2">Complete Guide to DMCA for Businesses</h3>
+                        <p class="text-muted-foreground text-sm mb-4">Understanding your rights and how to protect your intellectual property online.</p>
+                        <div class="text-xs text-muted-foreground">March 15, 2024</div>
+                    </div>
+                </article>
+
+                <article class="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
+                    <!-- Brand protection monitoring screens and security -->
+                    <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200" alt="Brand protection monitoring dashboard" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-semibold mb-2">Advanced Brand Monitoring Strategies</h3>
+                        <p class="text-muted-foreground text-sm mb-4">Learn how AI-powered tools can revolutionize your brand protection efforts.</p>
+                        <div class="text-xs text-muted-foreground">March 12, 2024</div>
+                    </div>
+                </article>
+
+                <article class="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
+                    <!-- Social media monitoring and protection graphics -->
+                    <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200" alt="Social media monitoring and protection" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-semibold mb-2">Protecting Your Brand on Social Media</h3>
+                        <p class="text-muted-foreground text-sm mb-4">Essential tactics for preventing impersonation and maintaining authentic presence.</p>
+                        <div class="text-xs text-muted-foreground">March 10, 2024</div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: BlogSection -->
+
+    <!-- Contact Section -->
+    <!-- @COMPONENT: ContactSection [contact form and newsletter signup] -->
+    <section class="py-20 bg-muted">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Contact Form -->
+                <div class="bg-card border border-border rounded-xl p-8">
+                    <h3 class="text-2xl font-bold mb-6">Get in Touch</h3>
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Full Name</label>
+                            <input type="text" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring bg-background" data-bind="form.fullName">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Email Address</label>
+                            <input type="email" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring bg-background" data-bind="form.email">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Message</label>
+                            <textarea rows="4" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring bg-background" data-bind="form.message"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors" data-event="click:handleContactSubmit">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Newsletter Signup -->
+                <div class="bg-card border border-border rounded-xl p-8">
+                    <h3 class="text-2xl font-bold mb-6">Stay Updated</h3>
+                    <p class="text-muted-foreground mb-6">Get the latest brand protection insights and platform updates delivered to your inbox.</p>
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Email Address</label>
+                            <input type="email" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring bg-background" data-bind="newsletter.email">
+                        </div>
+                        <button type="submit" class="w-full bg-secondary text-secondary-foreground py-3 rounded-lg hover:bg-secondary/90 transition-colors" data-event="click:handleNewsletterSignup">
+                            Subscribe
+                        </button>
+                    </form>
+
+                    <!-- Social Links -->
+                    <div class="mt-8 pt-6 border-t border-border">
+                        <p class="text-sm text-muted-foreground mb-4">Follow us on social media</p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 bg-muted text-muted-foreground rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-muted text-muted-foreground rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-muted text-muted-foreground rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ContactSection -->
+
+    <!-- Footer -->
+    <!-- @COMPONENT: Footer [company links, legal information, and social media] -->
+    <footer class="bg-foreground text-background py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-shield-alt text-primary text-2xl"></i>
+                        <span class="text-xl font-bold">Brand Safe</span>
+                    </div>
+                    <p class="text-gray-400">Comprehensive brand protection for modern businesses.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">API Docs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">About</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">DMCA</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex justify-between items-center">
+                <p class="text-gray-400">© 2024 Brand Safe. All rights reserved.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <!-- JavaScript -->
+    <script>
+        // FAQ Toggle Functionality
+        function toggleFAQ(index) {
+            const content = document.getElementById(`faq-content-${index}`);
+            const icon = document.getElementById(`faq-icon-${index}`);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Counter Animation
+        (function() {
+            const observerOptions = {
+                threshold: 0.5
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counters = entry.target.querySelectorAll('.animate-counter');
+                        counters.forEach(counter => {
+                            const target = counter.getAttribute('data-target');
+                            let current = 0;
+                            const increment = target / 50;
+                            const timer = setInterval(() => {
+                                current += increment;
+                                if (current >= target) {
+                                    current = target;
+                                    clearInterval(timer);
+                                }
+                                counter.textContent = Math.floor(current) + (counter.textContent.includes('%') ? '%' : counter.textContent.includes('M') ? 'M+' : counter.textContent.includes('B') ? 'B+' : counter.textContent.includes('$') ? 'M+' : '');
+                            }, 40);
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const statsSection = document.querySelector('#statistics');
+                if (statsSection) observer.observe(statsSection);
+            });
+        })();
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // TODO: Implement form submission handlers
+        // TODO: Implement newsletter signup functionality
+        // TODO: Implement mobile app download tracking
+        // TODO: Implement dashboard data fetching and real-time updates
+        // TODO: Implement user authentication and JWT token management
+    </script>
+</body>
+</html>

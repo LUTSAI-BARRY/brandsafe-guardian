@@ -10,6 +10,7 @@ import SignIn from "@/pages/signin";
 import SignUp from "@/pages/signup";
 import Dashboard from "@/pages/dashboard";
 import NotFound from "@/pages/not-found";
+import Onboarding from "./pages/onboarding";
 
 function Router() {
   return (
@@ -17,14 +18,25 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/signin" component={SignIn} />
       <Route path="/signup" component={SignUp} />
+      <Route path="/dashboard"/>
+        {/* Add this under the protected section */}
+      <Route path="/onboarding">
+      
+        <ProtectedRoute>
+          <Onboarding />
+        </ProtectedRoute>
+      </Route>
+
       <Route path="/dashboard">
         <ProtectedRoute>
           <Dashboard />
         </ProtectedRoute>
       </Route>
+
       <Route component={NotFound} />
     </Switch>
   );
+
 }
 
 function App() {

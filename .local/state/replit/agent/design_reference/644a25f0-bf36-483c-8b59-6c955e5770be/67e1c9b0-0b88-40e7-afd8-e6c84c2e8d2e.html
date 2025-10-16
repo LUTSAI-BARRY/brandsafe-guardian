@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Safe - Brand Protection Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    destructive: {
+                        DEFAULT: "var(--destructive)",
+                        foreground: "var(--destructive-foreground)",
+                    },
+                    success: {
+                        DEFAULT: "var(--success)",
+                        foreground: "var(--success-foreground)",
+                    },
+                    warning: {
+                        DEFAULT: "var(--warning)",
+                        foreground: "var(--warning-foreground)",
+                    },
+                    border: "var(--border)",
+                    input: "var(--input)",
+                    ring: "var(--ring)",
+                },
+                fontFamily: {
+                    sans: ["var(--font-sans)"],
+                }
+            },
+        }
+    };
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: hsl(210 40% 98%);
+            --foreground: hsl(215 25% 10%);
+            --card: hsl(0 0% 100%);
+            --card-foreground: hsl(215 25% 10%);
+            --primary: hsl(217 91% 40%);
+            --primary-foreground: hsl(0 0% 100%);
+            --secondary: hsl(210 40% 96%);
+            --secondary-foreground: hsl(215 25% 10%);
+            --muted: hsl(210 40% 96%);
+            --muted-foreground: hsl(215 16% 45%);
+            --accent: hsl(210 40% 96%);
+            --accent-foreground: hsl(215 25% 10%);
+            --destructive: hsl(0 84% 60%);
+            --destructive-foreground: hsl(0 0% 100%);
+            --success: hsl(142 71% 45%);
+            --success-foreground: hsl(0 0% 100%);
+            --warning: hsl(32 95% 44%);
+            --warning-foreground: hsl(0 0% 100%);
+            --border: hsl(214 32% 91%);
+            --input: hsl(214 32% 91%);
+            --ring: hsl(217 91% 40%);
+            --radius: 0.5rem;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+        
+        * {
+            font-family: var(--font-sans);
+        }
+        
+        .chart-container {
+            background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+        }
+        
+        .threat-critical { 
+            background-color: rgba(220, 38, 38, 0.1); 
+            border-left: 4px solid #DC2626; 
+        }
+        
+        .threat-high { 
+            background-color: rgba(217, 119, 6, 0.1); 
+            border-left: 4px solid #D97706; 
+        }
+        
+        .threat-medium { 
+            background-color: rgba(234, 179, 8, 0.1); 
+            border-left: 4px solid #EAB308; 
+        }
+        
+        .threat-low { 
+            background-color: rgba(5, 150, 105, 0.1); 
+            border-left: 4px solid #059669; 
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground">
+    <!-- @COMPONENT: Navigation -->
+    <nav class="bg-card border-b border-border shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-primary">Brand Safe</h1>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="#" class="text-primary font-medium">Dashboard</a>
+                            <a href="#" class="text-muted-foreground hover:text-foreground">Monitoring</a>
+                            <a href="#" class="text-muted-foreground hover:text-foreground">Takedowns</a>
+                            <a href="#" class="text-muted-foreground hover:text-foreground">Reports</a>
+                            <a href="#" class="text-muted-foreground hover:text-foreground">Settings</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-muted-foreground hover:text-foreground">
+                        <i class="fas fa-bell text-lg"></i>
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                            <span class="text-primary-foreground text-sm font-medium">JS</span>
+                        </div>
+                        <span class="text-sm font-medium" data-bind="user.name">John Smith</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: Navigation -->
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- @COMPONENT: DashboardHeader -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-foreground mb-2">Brand Protection Dashboard</h2>
+            <p class="text-muted-foreground">Monitor and protect your brand across digital platforms</p>
+        </div>
+        <!-- @END_COMPONENT: DashboardHeader -->
+
+        <!-- @COMPONENT: MetricsCards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-card rounded-lg border border-border p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-muted-foreground">Active Threats</p>
+                        <p class="text-3xl font-bold text-destructive" data-bind="metrics.activeThreats">147</p>
+                    </div>
+                    <div class="w-12 h-12 bg-destructive/10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-destructive text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-muted-foreground mt-2">+12% from last week</p>
+            </div>
+
+            <div class="bg-card rounded-lg border border-border p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-muted-foreground">Resolved Cases</p>
+                        <p class="text-3xl font-bold text-success" data-bind="metrics.resolvedCases">892</p>
+                    </div>
+                    <div class="w-12 h-12 bg-success/10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-check-circle text-success text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-muted-foreground mt-2">+8% from last week</p>
+            </div>
+
+            <div class="bg-card rounded-lg border border-border p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-muted-foreground">Under Review</p>
+                        <p class="text-3xl font-bold text-warning" data-bind="metrics.underReview">23</p>
+                    </div>
+                    <div class="w-12 h-12 bg-warning/10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-clock text-warning text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-muted-foreground mt-2">-5% from last week</p>
+            </div>
+
+            <div class="bg-card rounded-lg border border-border p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-muted-foreground">Monitored URLs</p>
+                        <p class="text-3xl font-bold text-primary" data-bind="metrics.monitoredUrls">1,247</p>
+                    </div>
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-globe text-primary text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-muted-foreground mt-2">+15% from last week</p>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: MetricsCards -->
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- @COMPONENT: ThreatOverview -->
+            <div class="lg:col-span-2">
+                <div class="bg-card rounded-lg border border-border shadow-sm">
+                    <div class="p-6 border-b border-border">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-foreground">Recent Threats</h3>
+                            <div class="flex items-center space-x-2">
+                                <select class="bg-background border border-border rounded-md px-3 py-1 text-sm">
+                                    <option>All Platforms</option>
+                                    <option>Google</option>
+                                    <option>Social Media</option>
+                                    <option>E-commerce</option>
+                                </select>
+                                <button class="bg-primary text-primary-foreground px-4 py-1 rounded-md text-sm hover:bg-primary/90">
+                                    <i class="fas fa-plus mr-2"></i>Submit URL
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-muted/50">
+                                <tr>
+                                    <th class="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase">Threat Type</th>
+                                    <th class="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase">URL/Platform</th>
+                                    <th class="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase">Severity</th>
+                                    <th class="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase">Status</th>
+                                    <th class="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-border">
+                                <!-- @MAP: threats.map(threat => ( -->
+                                <tr class="threat-critical" data-mock="true">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-image text-destructive mr-3"></i>
+                                            <div>
+                                                <p class="font-medium text-foreground">Logo Misuse</p>
+                                                <p class="text-sm text-muted-foreground">Unauthorized brand asset</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-sm text-foreground">counterfeit-store.com</p>
+                                        <p class="text-xs text-muted-foreground">E-commerce</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-destructive/10 text-destructive">
+                                            Critical
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning/10 text-warning">
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center space-x-2">
+                                            <button class="text-primary hover:text-primary/80 text-sm">
+                                                <i class="fas fa-gavel"></i>
+                                            </button>
+                                            <button class="text-muted-foreground hover:text-foreground text-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="threat-high" data-mock="true">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-user-circle text-warning mr-3"></i>
+                                            <div>
+                                                <p class="font-medium text-foreground">Impersonation</p>
+                                                <p class="text-sm text-muted-foreground">Fake social media account</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-sm text-foreground">@fake_brand_official</p>
+                                        <p class="text-xs text-muted-foreground">Instagram</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning/10 text-warning">
+                                            High
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                                            Under Review
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center space-x-2">
+                                            <button class="text-primary hover:text-primary/80 text-sm">
+                                                <i class="fas fa-gavel"></i>
+                                            </button>
+                                            <button class="text-muted-foreground hover:text-foreground text-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="threat-medium" data-mock="true">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-link text-yellow-500 mr-3"></i>
+                                            <div>
+                                                <p class="font-medium text-foreground">Domain Squatting</p>
+                                                <p class="text-sm text-muted-foreground">Similar domain registration</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-sm text-foreground">yourbrand-shop.net</p>
+                                        <p class="text-xs text-muted-foreground">Domain</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                            Medium
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">
+                                            Resolved
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center space-x-2">
+                                            <button class="text-muted-foreground hover:text-foreground text-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- @END_MAP )) -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: ThreatOverview -->
+
+            <!-- @COMPONENT: QuickActions -->
+            <div class="space-y-6">
+                <!-- Manual URL Submission -->
+                <div class="bg-card rounded-lg border border-border p-6 shadow-sm">
+                    <h3 class="text-lg font-semibold text-foreground mb-4">Submit URL for Monitoring</h3>
+                    <form data-implementation="Should validate URL format and add to monitoring queue">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-foreground mb-2">URL to Monitor</label>
+                                <input type="url" placeholder="https://example.com" 
+                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-foreground mb-2">Platform</label>
+                                <select class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring">
+                                    <option>E-commerce Site</option>
+                                    <option>Social Media</option>
+                                    <option>Search Engine</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <button type="submit" 
+                                    class="w-full bg-primary text-primary-foreground py-2 px-4 rounded-md hover:bg-primary/90 transition-colors"
+                                    data-event="click:handleSubmitUrl">
+                                Submit for Review
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Threat Activity Chart -->
+                <div class="bg-card rounded-lg border border-border p-6 shadow-sm">
+                    <h3 class="text-lg font-semibold text-foreground mb-4">Threat Activity (7 days)</h3>
+                    <div class="chart-container rounded-lg p-4 text-white">
+                        <!-- @FUNCTIONALITY: This should implement a real chart using Chart.js or similar -->
+                        <div class="flex items-end justify-between h-32 space-x-2">
+                            <div class="flex flex-col items-center">
+                                <div class="bg-white/20 w-8 h-16 rounded-t mb-2"></div>
+                                <span class="text-xs">Mon</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="bg-white/40 w-8 h-24 rounded-t mb-2"></div>
+                                <span class="text-xs">Tue</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="bg-white/60 w-8 h-20 rounded-t mb-2"></div>
+                                <span class="text-xs">Wed</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="bg-white/80 w-8 h-28 rounded-t mb-2"></div>
+                                <span class="text-xs">Thu</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="bg-white/30 w-8 h-12 rounded-t mb-2"></div>
+                                <span class="text-xs">Fri</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="bg-white/20 w-8 h-8 rounded-t mb-2"></div>
+                                <span class="text-xs">Sat</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="bg-white/50 w-8 h-18 rounded-t mb-2"></div>
+                                <span class="text-xs">Sun</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="bg-card rounded-lg border border-border p-6 shadow-sm">
+                    <h3 class="text-lg font-semibold text-foreground mb-4">Platform Coverage</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fab fa-google text-blue-500 mr-3"></i>
+                                <span class="text-sm">Google Search</span>
+                            </div>
+                            <span class="text-sm font-medium text-muted-foreground" data-bind="stats.google">2,847</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fab fa-instagram text-pink-500 mr-3"></i>
+                                <span class="text-sm">Instagram</span>
+                            </div>
+                            <span class="text-sm font-medium text-muted-foreground" data-bind="stats.instagram">1,234</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fab fa-facebook text-blue-600 mr-3"></i>
+                                <span class="text-sm">Facebook</span>
+                            </div>
+                            <span class="text-sm font-medium text-muted-foreground" data-bind="stats.facebook">892</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fab fa-tiktok text-black mr-3"></i>
+                                <span class="text-sm">TikTok</span>
+                            </div>
+                            <span class="text-sm font-medium text-muted-foreground" data-bind="stats.tiktok">567</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: QuickActions -->
+        </div>
+
+        <!-- @COMPONENT: RecentTakedowns -->
+        <div class="mt-8">
+            <div class="bg-card rounded-lg border border-border shadow-sm">
+                <div class="p-6 border-b border-border">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-foreground">Recent DMCA Takedown Requests</h3>
+                        <button class="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm hover:bg-primary/90">
+                            <i class="fas fa-download mr-2"></i>Generate Report
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-muted/50">
+                            <tr>
+                                <th class="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase">Request ID</th>
+                                <th class="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase">Target URL</th>
+                                <th class="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase">Platform</th>
+                                <th class="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase">Date Sent</th>
+                                <th class="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase">Status</th>
+                                <th class="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-border">
+                            <!-- @MAP: takedowns.map(takedown => ( -->
+                            <tr data-mock="true">
+                                <td class="px-6 py-4 text-sm font-medium text-foreground">#TD-2024-001</td>
+                                <td class="px-6 py-4 text-sm text-foreground">counterfeit-store.com/products</td>
+                                <td class="px-6 py-4 text-sm text-muted-foreground">Google</td>
+                                <td class="px-6 py-4 text-sm text-muted-foreground">2024-01-15</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">
+                                        Approved
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button class="text-primary hover:text-primary/80 text-sm mr-3">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="text-muted-foreground hover:text-foreground text-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                            <tr data-mock="true">
+                                <td class="px-6 py-4 text-sm font-medium text-foreground">#TD-2024-002</td>
+                                <td class="px-6 py-4 text-sm text-foreground">fake-brand-site.net</td>
+                                <td class="px-6 py-4 text-sm text-muted-foreground">Bing</td>
+                                <td class="px-6 py-4 text-sm text-muted-foreground">2024-01-14</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning/10 text-warning">
+                                        Pending
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button class="text-primary hover:text-primary/80 text-sm mr-3">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="text-muted-foreground hover:text-foreground text-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- @END_MAP )) -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: RecentTakedowns -->
+    </div>
+
+    <!-- @COMPONENT: Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-success text-success-foreground px-6 py-3 rounded-lg shadow-lg transform translate-y-full transition-transform duration-300 opacity-0">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span>Action completed successfully</span>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Toast Notification -->
+
+    <script>
+        (function() {
+            // TODO: Implement real functionality including API calls, form validation, and state management
+            
+            // Mock functionality for demonstration
+            document.addEventListener('DOMContentLoaded', function() {
+                // Handle form submissions
+                const forms = document.querySelectorAll('form');
+                forms.forEach(form => {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        showToast('URL submitted for monitoring');
+                    });
+                });
+
+                // Handle button clicks
+                const buttons = document.querySelectorAll('button[data-event]');
+                buttons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        const action = this.getAttribute('data-event');
+                        if (action.includes('handleSubmit')) {
+                            e.preventDefault();
+                            showToast('Form submitted successfully');
+                        }
+                    });
+                });
+            });
+
+            function showToast(message) {
+                const toast = document.getElementById('toast');
+                const messageElement = toast.querySelector('span');
+                messageElement.textContent = message;
+                
+                toast.classList.remove('translate-y-full', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+                
+                setTimeout(() => {
+                    toast.classList.add('translate-y-full', 'opacity-0');
+                    toast.classList.remove('translate-y-0', 'opacity-100');
+                }, 3000);
+            }
+
+            // Mock real-time updates
+            setInterval(() => {
+                const activeThreats = document.querySelector('[data-bind="metrics.activeThreats"]');
+                if (activeThreats) {
+                    const currentValue = parseInt(activeThreats.textContent);
+                    const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+                    if (change !== 0) {
+                        activeThreats.textContent = Math.max(0, currentValue + change);
+                    }
+                }
+            }, 10000);
+        })();
+    </script>
+</body>
+</html>
