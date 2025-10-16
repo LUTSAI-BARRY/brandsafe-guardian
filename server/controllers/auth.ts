@@ -89,3 +89,22 @@ export async function login(req: Request, res: Response) {
     res.status(500).json({ error: "Internal server error" });
   }
 }
+
+// -------------------- ME --------------------
+export async function me(req: Request, res: Response) {
+  try {
+    // User is already attached to req by requireAuth middleware
+    const user = (req as any).user;
+    
+    if (!user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    res.status(200).json({
+      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+    });
+  } catch (error) {
+    console.error("Me Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
