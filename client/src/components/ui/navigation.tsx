@@ -32,13 +32,14 @@ export function Navigation() {
             >
               Features
             </button>
-            <button 
-              onClick={() => scrollToSection('pricing')}
-              className="text-muted-foreground hover:text-primary transition-colors"
-              data-testid="nav-pricing"
-            >
-              Pricing
-            </button>
+            <Link href="/pricing">
+              <button 
+                className="text-muted-foreground hover:text-primary transition-colors"
+                data-testid="nav-pricing"
+              >
+                Pricing
+              </button>
+            </Link>
             <button 
               onClick={() => scrollToSection('testimonials')}
               className="text-muted-foreground hover:text-primary transition-colors"
@@ -79,13 +80,15 @@ export function Navigation() {
                 >
                   Features
                 </button>
-                <button 
-                  onClick={() => scrollToSection('pricing')}
-                  className="text-left text-muted-foreground hover:text-primary transition-colors"
-                  data-testid="mobile-nav-pricing"
-                >
-                  Pricing
-                </button>
+                <Link href="/pricing">
+                  <button 
+                    className="text-left text-muted-foreground hover:text-primary transition-colors"
+                    data-testid="mobile-nav-pricing"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Pricing
+                  </button>
+                </Link>
                 <button 
                   onClick={() => scrollToSection('testimonials')}
                   className="text-left text-muted-foreground hover:text-primary transition-colors"

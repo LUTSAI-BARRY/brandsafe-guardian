@@ -2,6 +2,15 @@ import { pgTable, text, varchar, timestamp, serial } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// -------------------- PLANS TABLE --------------------
+export const plans = pgTable("plans", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 50 }).notNull(),
+  price: varchar("price", { length: 20 }).notNull(),
+  features: text("features").notNull(), // JSON string of features
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // -------------------- USERS TABLE --------------------
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -9,6 +18,7 @@ export const users = pgTable("users", {
   email: varchar("email", { length: 191 }).notNull().unique(),
   password: text("password").notNull(),
   role: varchar("role", { length: 50 }).notNull().default("creator"),
+  planId: serial("plan_id").references(() => plans.id),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -36,3 +46,4 @@ export type InsertUser = z.infer<typeof insertUserSchema>;
 export type LoginUser = z.infer<typeof loginSchema>;
 export type User = typeof users.$inferSelect;
 export type SafeUser = Omit<User, "password">;
+export type Plan = typeof plans.$inferSelect;

@@ -5,7 +5,8 @@ import * as schema from "@shared/schema";
 
 // Ensure environment variable is present
 if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL must be set");
+  // For development, use a default Neon URL
+  process.env.DATABASE_URL = "postgresql://username:password@localhost:5432/brandsafe_dev";
 }
 
 // Initialize Neon and Drizzle

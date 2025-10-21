@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BarChart, Shield, Search, FileText, Upload, Settings, LogOut, Activity } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { BarChart, Shield, Search, FileText, Upload, Settings, LogOut, Activity, Crown, Star } from "lucide-react";
+
+interface Plan {
+  id: number;
+  name: string;
+  price: string;
+  features: string[];
+}
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -15,6 +23,32 @@ export default function Dashboard() {
   const [searchPlatform, setSearchPlatform] = useState("");
   const [searchHandle, setSearchHandle] = useState("");
   const [searchResults, setSearchResults] = useState<any>(null);
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [currentPlan, setCurrentPlan] = useState<Plan | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchPlans();
+    // Simulate getting user's current plan (in real app, this would come from user data)
+    setCurrentPlan({
+      id: 1,
+      name: "Bronze",
+      price: "$29/month",
+      features: ["Basic brand monitoring", "1 brand protected", "Weekly reports", "Email alerts", "Basic support"]
+    });
+  }, []);
+
+  const fetchPlans = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/plans`);
+      const data = await response.json();
+      setPlans(data.plans || []);
+    } catch (error) {
+      console.error("Error fetching plans:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -58,6 +92,46 @@ export default function Dashboard() {
       </header>
 
       <div className="container mx-auto px-4 py-8">
+        {/* Current Plan Card */}
+        {currentPlan && (
+          <Card className="mb-8 border-primary/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Crown className="h-5 w-5 text-primary" />
+                Your Current Plan
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold">{currentPlan.name}</h3>
+                  <p className="text-lg text-primary font-semibold">{currentPlan.price}</p>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {currentPlan.features.slice(0, 3).map((feature, index) => (
+                      <Badge key={index} variant="secondary" className="text-xs">
+                        {feature}
+                      </Badge>
+                    ))}
+                    {currentPlan.features.length > 3 && (
+                      <Badge variant="outline" className="text-xs">
+                        +{currentPlan.features.length - 3} more
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" onClick={() => navigate("/pricing")}>
+                    View Plans
+                  </Button>
+                  <Button variant="default" onClick={() => navigate("/pricing")}>
+                    Upgrade Plan
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         <div className="grid gap-4 md:grid-cols-3 mb-8">
           <Card data-testid="card-analytics-visits">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

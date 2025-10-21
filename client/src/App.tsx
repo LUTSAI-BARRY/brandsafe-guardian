@@ -9,6 +9,7 @@ import Home from "@/pages/home";
 import SignIn from "@/pages/signin";
 import SignUp from "@/pages/signup";
 import Dashboard from "@/pages/dashboard";
+import Pricing from "@/pages/pricing";
 import NotFound from "@/pages/not-found";
 import Onboarding from "./pages/onboarding";
 
@@ -16,17 +17,15 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/pricing" component={Pricing} />
       <Route path="/signin" component={SignIn} />
       <Route path="/signup" component={SignUp} />
-      <Route path="/dashboard"/>
-        {/* Add this under the protected section */}
+      {/* Protected routes */}
       <Route path="/onboarding">
-      
         <ProtectedRoute>
           <Onboarding />
         </ProtectedRoute>
       </Route>
-
       <Route path="/dashboard">
         <ProtectedRoute>
           <Dashboard />

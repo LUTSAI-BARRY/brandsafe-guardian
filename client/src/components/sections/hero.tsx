@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Award, AlertTriangle, CheckCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "wouter";
 
 export function HeroSection() {
   const [brandName, setBrandName] = useState("");
@@ -81,11 +82,8 @@ export function HeroSection() {
   };
 
   const handleGetStarted = () => {
-    toast({
-      title: "Get Started!",
-      description: "Redirecting to registration...",
-    });
-    // In a real app, this would redirect to signup
+    // Redirect to pricing page
+    window.location.href = "/pricing";
   };
 
   return (
@@ -98,13 +96,13 @@ export function HeroSection() {
           </Badge>
           
           <h1 className="text-4xl sm:text-6xl font-bold text-foreground mb-6 animate-fade-in">
-            Piracy Protection for{" "}
-            <span className="gradient-text">Content Creators</span>
+            Protect Your Brand{" "}
+            <span className="gradient-text">Online</span>
           </h1>
           
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto animate-fade-in">
-            BrandSafe is the industry's most trusted and advanced brand protection service. 
-            It safeguards your brand by identifying, monitoring, and removing counterfeit content and infringements.
+            BrandSafe is the industry's most trusted brand protection service. 
+            Monitor, detect, and remove counterfeit content and brand infringements across the internet.
           </p>
           
           <Button 

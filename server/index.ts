@@ -6,6 +6,17 @@ import { setupVite, serveStatic, log } from "./vite";
 // Load environment variables from .env file
 dotenv.config();
 
+// Set default environment variables if not provided
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = "dev-jwt-secret-key-change-in-production";
+}
+if (!process.env.PORT) {
+  process.env.PORT = "5000";
+}
+if (!process.env.VITE_API_URL) {
+  process.env.VITE_API_URL = "http://localhost:5000/api";
+}
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -65,11 +76,7 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
+  server.listen(port, "localhost", () => {
     log(`serving on port ${port}`);
   });
 })();

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "wouter";
@@ -25,6 +26,13 @@ export default function SignUp() {
   const { refetch } = useAuth();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Get selected plan from localStorage
+    const plan = localStorage.getItem("selectedPlan");
+    setSelectedPlan(plan);
+  }, []);
 
   const form = useForm<SignupForm>({
     resolver: zodResolver(signupSchema),
@@ -64,6 +72,13 @@ export default function SignUp() {
           <CardDescription>
             Enter your information to get started with BrandSafe
           </CardDescription>
+          {selectedPlan && (
+            <div className="mt-2">
+              <Badge variant="secondary" className="text-sm">
+                Selected Plan: {selectedPlan}
+              </Badge>
+            </div>
+          )}
         </CardHeader>
         <CardContent>
           <Form {...form}>
