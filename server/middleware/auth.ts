@@ -35,8 +35,8 @@ export async function requireAuth(
       return;
     }
 
-    const { passwordHash, ...safeUser } = user;
-    req.user = safeUser;
+    const { password, ...safeUser } = (user as unknown as { password: string }) || ({} as any);
+    req.user = safeUser as any;
 
     next();
   } catch (err) {

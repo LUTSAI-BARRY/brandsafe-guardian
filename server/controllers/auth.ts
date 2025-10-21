@@ -20,7 +20,7 @@ export async function signup(req: Request, res: Response) {
     const { name, email, password, role } = parseResult.data;
 
     // Check if user already exists
-    const existingUser = await storage.user.findUnique({ where: { email } });
+    const existingUser = await storage.getUserByEmail(email);
     if (existingUser) {
       return res.status(400).json({ error: "User already exists" });
     }
@@ -29,13 +29,11 @@ export async function signup(req: Request, res: Response) {
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
 
     // Create new user (schema expects "password")
-    const user = await storage.user.create({
-      data: {
-        name,
-        email,
-        role,
-        password: passwordHash,
-      },
+    const user = await storage.createUser({
+      name,
+      email,
+      role,
+      passwordHash,
     });
 
     // Generate JWT token
@@ -65,7 +63,7 @@ export async function login(req: Request, res: Response) {
     const { email, password } = parseResult.data;
 
     // Find user
-    const user = await storage.user.findUnique({ where: { email } });
+    const user = await storage.getUserByEmail(email);
     if (!user) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
