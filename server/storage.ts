@@ -1,11 +1,11 @@
-import { type User, type InsertUser, users } from "@shared/schema";
+import { type User, users } from "@shared/schema";
 import { db } from "../db";
 import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getUserById(id: number): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
-  createUser(user: InsertUser & { passwordHash: string }): Promise<User>;
+  createUser(user: { name: string; email: string; role?: string; passwordHash: string }): Promise<User>;
 }
 
 export class DBStorage implements IStorage {
@@ -19,9 +19,15 @@ export class DBStorage implements IStorage {
     return result[0];
   }
 
-  async createUser(userData: InsertUser & { passwordHash: string }): Promise<User> {
-    const { password, ...userWithoutPassword } = userData as any;
-    const result = await db.insert(users).values(userWithoutPassword).returning();
+  async createUser(userData: { name: string; email: string; role?: string; passwordHash: string }): Promise<User> {
+    const { passwordHash, ...rest } = userData;
+    const result = await db
+      .insert(users)
+      .values({
+        ...rest,
+        password: passwordHash,
+      })
+      .returning();
     return result[0];
   }
 }

@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useLocation } from "wouter";
-import api, { setAuthToken } from "@/lib/api";
+// NOTE: This file is not used. Keep minimal to avoid alias errors if opened.
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,6 +31,9 @@ type SignupFormValues = z.infer<typeof signupSchema>;
 
 export function SignUp() {
   const [, navigate] = useLocation();
+  useEffect(() => {
+    navigate("/signup");
+  }, [navigate]);
   const {
     register,
     handleSubmit,
@@ -38,20 +42,7 @@ export function SignUp() {
     resolver: zodResolver(signupSchema),
   });
 
-  const onSubmit = async (data: SignupFormValues) => {
-    try {
-      const response = await api.post("/auth/register/", data);
-      const accessToken = response.data.tokens.access;
-      setAuthToken(accessToken);
-      localStorage.setItem("brandsafe_token", accessToken); // Persist for session restore
-      navigate("/dashboard");
-    } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.detail ||
-        "An unexpected error occurred. Please try again.";
-      alert(errorMessage); // Replace with a toast notification in a real app
-    }
-  };
+  const onSubmit = async (_data: SignupFormValues) => {};
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
